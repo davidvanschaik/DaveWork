@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Src\Foundation\Routing;
 
+use Src\Http\Request;
+
+require $_SERVER['DOCUMENT_ROOT'] . '/routes/Routes.php';
+
 class Route
 {
     public static array|null $routes = null;
 
     private static function Register(string $method, string $uri, array | callable $action)
     {
-        return self::$routes[$method][$uri] = new Register($method, $uri, $action);
+        return self::$routes[$method][$uri] = new Register($method, $uri, $action, new Request);
     }
 
     public static function get(string $uri, array | callable $action)
@@ -35,12 +39,35 @@ class Route
 
     public static function findRoute(string $method, string $uri)
     {
-        if (! self::$routes) {
-            require_once($_SERVER['DOCUMENT_ROOT'] . '/routes/Routes.php');
+//        echo json_encode(self::$routes);
+
+        if (! array_key_exists($method, self::$routes)) {
+            return null;
         }
 
-        foreach (self::$routes as $route) {
-            return $route[$uri];
+        foreach (self::$routes[$method] as $route) {
+
+            $serverPartials = Register::extractPartials($uri);
+            $routePartials = $route->getPartials();
+
+            if (count($routePartials) !== count($serverPartials)) {
+                http_response_code(404);
+            }
+
+            $routeUriParts = [];
+            foreach ($routePartials as $index => $part) {
+               if ($part['isParameter'] === true) {
+                   $routeUriParts[] = $serverPartials[$index]['data'];
+                   $route->request->parameters = $serverPartials[$index]['data'];
+                   continue;
+               }
+               $routeUriParts[] = $part['data'];
+            }
+            $routeUri = '/' . implode('/', $routeUriParts);
+
+            $route->uri = $routeUri;
+            return $route;
+
         }
         return null;
     }
