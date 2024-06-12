@@ -17,7 +17,7 @@ namespace Illuminate\Support\Facades {
             return $instance->connection($name);
         }
         /**
-         * Register a custom Doctrine type.
+         * Route a custom Doctrine type.
          *
          * @param string $class
          * @param string $name
@@ -127,7 +127,7 @@ namespace Illuminate\Support\Facades {
             return $instance->availableDrivers();
         }
         /**
-         * Register an extension connection resolver.
+         * Route an extension connection resolver.
          *
          * @param string $name
          * @param callable $resolver
@@ -187,7 +187,7 @@ namespace Illuminate\Support\Facades {
             return $instance->setApplication($app);
         }
         /**
-         * Register a custom macro.
+         * Route a custom macro.
          *
          * @param string $name
          * @param object|callable $macro
@@ -537,7 +537,7 @@ namespace Illuminate\Support\Facades {
             $instance->logQuery($query, $bindings, $time);
         }
         /**
-         * Register a callback to be invoked when the connection queries for longer than a given amount of time.
+         * Route a callback to be invoked when the connection queries for longer than a given amount of time.
          *
          * @param \DateTimeInterface|\Carbon\CarbonInterval|float|int $threshold
          * @param callable $handler
@@ -583,7 +583,7 @@ namespace Illuminate\Support\Facades {
             $instance->resetTotalQueryDuration();
         }
         /**
-         * Register a hook to be run just before a database query is executed.
+         * Route a hook to be run just before a database query is executed.
          *
          * @param \Closure $callback
          * @return \Illuminate\Database\MySqlConnection
@@ -595,7 +595,7 @@ namespace Illuminate\Support\Facades {
             return $instance->beforeExecuting($callback);
         }
         /**
-         * Register a database query listener with the connection.
+         * Route a database query listener with the connection.
          *
          * @param \Closure $callback
          * @return void
@@ -1098,7 +1098,7 @@ namespace Illuminate\Support\Facades {
             return $instance->withTablePrefix($grammar);
         }
         /**
-         * Register a connection resolver.
+         * Route a connection resolver.
          *
          * @param string $driver
          * @param \Closure $callback
@@ -1199,7 +1199,7 @@ namespace Illuminate\Support\Facades {
     }
     class Event {
         /**
-         * Register an event listener with the dispatcher.
+         * Route an event listener with the dispatcher.
          *
          * @param \Closure|string|array $events
          * @param \Closure|string|array|null $listener
@@ -1236,7 +1236,7 @@ namespace Illuminate\Support\Facades {
             return $instance->hasWildcardListeners($eventName);
         }
         /**
-         * Register an event and payload to be fired later.
+         * Route an event and payload to be fired later.
          *
          * @param string $event
          * @param object|array $payload
@@ -1261,7 +1261,7 @@ namespace Illuminate\Support\Facades {
             $instance->flush($event);
         }
         /**
-         * Register an event subscriber with the dispatcher.
+         * Route an event subscriber with the dispatcher.
          *
          * @param object|string $subscriber
          * @return void
@@ -1312,7 +1312,7 @@ namespace Illuminate\Support\Facades {
             return $instance->getListeners($eventName);
         }
         /**
-         * Register an event listener with the dispatcher.
+         * Route an event listener with the dispatcher.
          *
          * @param \Closure|string|array $listener
          * @param bool $wildcard
@@ -1384,7 +1384,7 @@ namespace Illuminate\Support\Facades {
             return $instance->getRawListeners();
         }
         /**
-         * Register a custom macro.
+         * Route a custom macro.
          *
          * @param string $name
          * @param object|callable $macro
@@ -1976,7 +1976,7 @@ namespace {
         }
 
         /**
-         * Register a new global scope.
+         * Route a new global scope.
          *
          * @param string $identifier
          * @param \Illuminate\Database\Eloquent\Scope|\Closure $scope
@@ -2539,7 +2539,7 @@ namespace {
         }
 
         /**
-         * Register a replacement for the default delete function.
+         * Route a replacement for the default delete function.
          *
          * @param \Closure $callback
          * @return void
@@ -5104,7 +5104,7 @@ namespace {
         }
 
         /**
-         * Register a closure to be invoked before the query is executed.
+         * Route a closure to be invoked before the query is executed.
          *
          * @param callable $callback
          * @return \Illuminate\Database\Query\Builder
@@ -5635,7 +5635,7 @@ namespace {
         }
 
         /**
-         * Register a custom macro.
+         * Route a custom macro.
          *
          * @param string $name
          * @param object|callable $macro

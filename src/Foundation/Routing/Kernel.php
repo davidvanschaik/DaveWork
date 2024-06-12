@@ -8,14 +8,18 @@ use Src\Http\Request;
 
 class Kernel
 {
+    public function __construct(
+        private readonly RouteRegistration $routeRegistration
+    ) {}
+
     public function handle(): void
     {
-        $route = Route::findRoute(Request::method(), Request::uri());
+
+        $route = $this->routeRegistration->findRoute(Request::method(), Request::uri());
 
 //        var_dump($route);
-
         if (! $route) {
-            http_response_code(404);
+//            http_response_code(404);
             return;
         }
 
@@ -37,7 +41,7 @@ class Kernel
         return $parameters;
     }
 
-    public function callFunction(Register $route, array $parameters): void
+    public function callFunction(Route $route, array $parameters): void
     {
         $action = $route->action;
 

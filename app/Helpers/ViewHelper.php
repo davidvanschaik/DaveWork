@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Helpers;
+namespace app\Helpers;
 
 use Jenssegers\Blade\Blade;
 
@@ -10,6 +10,6 @@ class ViewHelper
 {
     public static function template($templateName, array $data): void
     {
-        $blade = new Blade('views','cache')
+        $blade = new Blade('views','cache');
     }
 }

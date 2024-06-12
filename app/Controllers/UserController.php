@@ -7,10 +7,14 @@ namespace App\Controllers;
 use Src\Http\Request;
 class UserController
 {
-    public function index()
+    public function index(): void
     {
-        echo $_SERVER['REQUEST_URI'];
-        echo 'Hoi Ali!';
+        echo 'This is my UserController index method!';
+    }
+
+    public function show(): void
+    {
+        echo 'This is my UserController show method!';
     }
 
 }

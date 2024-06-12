@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Helpers\ViewHelper;
 use Src\Http\Request;
 
 class HomeController
 {
-    public function index(Request $request)
+    public function index(): void
     {
+        echo 'This is my HomeController index method!';
+    }
 
-      echo 'hallo!';
+    public function show(): void
+    {
+        echo 'This is my HomeController show method!';
     }
 }
