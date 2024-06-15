@@ -6,55 +6,36 @@ namespace Src\Foundation\Routing;
 
 use Src\Http\Request;
 
-class Kernel
+readonly class Kernel
 {
     public function __construct(
-        private readonly RouteRegistration $routeRegistration
+        private RouteRegistration $routeRegistration
     ) {}
 
     public function handle(): void
     {
-
         $route = $this->routeRegistration->findRoute(Request::method(), Request::uri());
 
-//        var_dump($route);
         if (! $route) {
-//            http_response_code(404);
+            http_response_code(404);
             return;
         }
 
-        $parameters = $this->extractParameters($route->uri, Request::uri());
-        $this->callFunction($route, $parameters);
+        $this->callFunction($route);
     }
 
-    public function extractParameters(string $routeUri, string $requestUri): array
-    {
-        $routeParts = explode('/', $routeUri);
-        $requestParts = explode('/', $requestUri);
-        $parameters = [];
-
-        foreach ($routeParts as $index => $part) {
-            if (str_contains($part, '{')) {
-                $parameters[] = $requestParts[$index];
-            }
-        }
-        return $parameters;
-    }
-
-    public function callFunction(Route $route, array $parameters): void
+    /**
+     * @param Route $route
+     * @return void
+     */
+    private function callFunction(Route $route): void
     {
         $action = $route->action;
 
-        if (is_callable($action)) {
-            call_user_func_array($action, $parameters);
+        if (is_array($action) && count($action) === 2) {
+            (new $action[0]())->{$action[1]}(new Request($route->parameters));
+        } else {
+            call_user_func($action);
         }
-        if (is_array($action)) {
-            $controllerName = $action[0];
-            $methodName = $action[1];
-
-            $controller = new $controllerName();
-            call_user_func_array([$controller, $methodName], $parameters);
-        }
-        
     }
 }

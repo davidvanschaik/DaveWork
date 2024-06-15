@@ -4,9 +4,16 @@ declare(strict_types=1);
 
 namespace Src\Http;
 
+use Src\Foundation\Routing\Route;
+
 class Request
 {
-    public static $parameters;
+    public readonly object $parameters;
+    public function __construct($params)
+    {
+        $this->parameters = (object) $params;
+    }
+
     public static function method()
     {
         return $_SERVER['REQUEST_METHOD'];

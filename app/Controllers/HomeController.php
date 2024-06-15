@@ -17,4 +17,9 @@ class HomeController
     {
         echo 'This is my HomeController show method!';
     }
+
+    public function user(): void
+    {
+        echo 'This is my HomeController user method!';
+    }
 }

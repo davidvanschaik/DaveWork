@@ -1,0 +1,102 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Src\Foundation\Routing;
+
+class RouteValidator
+{
+    public array $parameters = [];
+
+    /**
+     * @param string $serverUri
+     * @param string $routeUri
+     * @return bool
+     */
+    public function validateUri(string $serverUri, string $routeUri): bool
+    {
+        $serverUriParts = $this->extractParts($serverUri);
+        $routeUriParts = $this->extractParts($routeUri);
+
+        if (count($routeUriParts) ==  count($serverUriParts)) {
+            return $this->countParts($serverUriParts, $routeUriParts);
+        }
+        return false;
+    }
+
+    /**
+     * @param string $uri
+     * @return array
+     */
+    public function extractParts(string $uri): array
+    {
+        $uriParts = explode('?', $uri);
+        $routeParts = explode('/', $uriParts[0]);
+        $query = $uriParts[1] ?? '';
+
+        return $this->isParameter($routeParts);
+    }
+
+    /**
+     * @param array $parts
+     * @return array
+     */
+    private function isParameter(array $parts): array
+    {
+        $uri = [];
+
+        foreach ($parts as $part) {
+            if ($part === "") {
+                continue;
+            }
+
+            $uri[] = [
+                'name' => $part,
+                'uriParam' => preg_match('/{[^}]*}/', $part) === 1,
+            ];
+        }
+        return $uri;
+    }
+
+    /**
+     * @param array $serverUri
+     * @param array $routeUri
+     * @return bool
+     */
+    private function countParts(array $serverUri, array $routeUri): bool
+    {
+        $this->setParameters($serverUri, $routeUri);
+
+        if (count($serverUri) !== count($routeUri)) {
+            return false;
+        }
+
+        foreach ($serverUri as $key => $part) {
+            if ($part['uriParam'] === 1) {
+                continue;
+            }
+
+            if ($part['name'] === $routeUri[$key]['name']) {
+                continue;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @param array $serverUri
+     * @param array $routeUri
+     * @return void
+     */
+    private function setParameters(array &$serverUri, array $routeUri): void
+    {
+        foreach ($routeUri as $key => $part) {
+            if ($part['uriParam']) {
+                $param = trim($part['name'], '{}');
+                $this->parameters[$param] = $serverUri[$key]['name'];
+                $serverUri[$key]['uriParam'] = 1;
+            }
+        }
+    }
+}

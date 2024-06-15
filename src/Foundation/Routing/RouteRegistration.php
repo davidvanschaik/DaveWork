@@ -36,17 +36,17 @@ class RouteRegistration
         return self::register('PUT', $uri, $action);
     }
 
+    /**
+     * @param string $method
+     * @param string $serverUri
+     * @return Route|null
+     */
     public function findRoute(string $method, string $serverUri): ?Route
     {
         if (!array_key_exists($method, self::$routes)) {
             return null;
         }
 
-        return $this->doFindRoute($method, $serverUri);
-    }
-
-    private function doFindRoute(string $method, string $serverUri): ?Route
-    {
         foreach (self::$routes[$method] as $route) {
             if ($route->matches($serverUri)) {
                 return $route;
