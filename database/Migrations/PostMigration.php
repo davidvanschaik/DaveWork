@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Database\Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
-use src\handlers\ConnectionHandler;
-use Src\Interfaces\MigrationInterface;
+use Src\Handlers\ConnectionHandler;
+use Src\Interfaces\Migration;
 
-class PostMigration implements MigrationInterface
+class PostMigration implements Migration
 {
     public static function run(ConnectionHandler $connection): void
     {

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Src\Http;
 
-use Src\Foundation\Routing\Route;
-
 class Request
 {
     public readonly object $parameters;

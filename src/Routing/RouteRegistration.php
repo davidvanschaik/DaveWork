@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Foundation\Routing;
+namespace Src\Routing;
 
 class RouteRegistration
 {
@@ -43,7 +43,7 @@ class RouteRegistration
      */
     public function findRoute(string $method, string $serverUri): ?Route
     {
-        if (!array_key_exists($method, self::$routes)) {
+        if (! array_key_exists($method, self::$routes)) {
             return null;
         }
 

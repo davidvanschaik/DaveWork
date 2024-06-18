@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Foundation\Routing;
-
+namespace Src\Routing;
 class Route
 {
     public string $name;
@@ -11,9 +10,9 @@ class Route
     public readonly array $parameters;
 
     public function __construct(
-        public string $method,
-        public string $uri,
-        public mixed $action,
+        public readonly string $method,
+        public readonly string $uri,
+        public readonly mixed $action,
     ) {}
 
     /**

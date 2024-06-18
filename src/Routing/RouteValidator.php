@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Foundation\Routing;
+namespace Src\Routing;
 
 class RouteValidator
 {
@@ -18,7 +18,7 @@ class RouteValidator
         $serverUriParts = $this->extractParts($serverUri);
         $routeUriParts = $this->extractParts($routeUri);
 
-        if (count($routeUriParts) ==  count($serverUriParts)) {
+        if (count($routeUriParts) == count($serverUriParts)) {
             return $this->countParts($serverUriParts, $routeUriParts);
         }
         return false;
@@ -28,11 +28,10 @@ class RouteValidator
      * @param string $uri
      * @return array
      */
-    public function extractParts(string $uri): array
+    private function extractParts(string $uri): array
     {
         $uriParts = explode('?', $uri);
         $routeParts = explode('/', $uriParts[0]);
-        $query = $uriParts[1] ?? '';
 
         return $this->isParameter($routeParts);
     }
@@ -92,11 +91,12 @@ class RouteValidator
     private function setParameters(array &$serverUri, array $routeUri): void
     {
         foreach ($routeUri as $key => $part) {
-            if ($part['uriParam']) {
-                $param = trim($part['name'], '{}');
-                $this->parameters[$param] = $serverUri[$key]['name'];
-                $serverUri[$key]['uriParam'] = 1;
+            if (! $part['uriParam']) {
+                continue;
             }
+            $param = trim($part['name'], '{}');
+            $this->parameters[$param] = $serverUri[$key]['name'];
+            $serverUri[$key]['uriParam'] = 1;
         }
     }
 }

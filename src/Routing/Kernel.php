@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Foundation\Routing;
+namespace Src\Routing;
 
 use Src\Http\Request;
 

@@ -13,9 +13,9 @@ class HomeController
         echo 'This is my HomeController index method!';
     }
 
-    public function show(): void
+    public function show(Request $request): void
     {
-        echo 'This is my HomeController show method!';
+        echo "This is my HomeController show method! ID = " . $request->parameters->id;
     }
 
     public function user(): void

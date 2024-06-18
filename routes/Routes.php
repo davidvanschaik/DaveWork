@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use App\Controllers\HomeController;
-use App\Controllers\UserController;
 use App\Controllers\LikeController;
-use Src\Foundation\Routing\RouteRegistration as Route;
+use App\Controllers\UserController;
+use Src\Routing\RouteRegistration as Route;
 
 Route::get('/check', function () {
     echo 'this is a test';

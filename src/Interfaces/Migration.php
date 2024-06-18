@@ -6,7 +6,7 @@ namespace Src\Interfaces;
 
 use Src\Handlers\ConnectionHandler;
 
-interface MigrationInterface
+interface Migration
 {
     public static function run(ConnectionHandler $connection);
 
