@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Routing;
 
 use Src\Http\Request;
+use Src\Http\Session;
 
 readonly class Kernel
 {
@@ -21,6 +22,20 @@ readonly class Kernel
             return;
         }
 
+        $this->middleware($route);
+    }
+
+    /**
+     * @param Route $route
+     * @return void
+     */
+    private function middleware(Route $route)
+    {
+        $middleware = $route->middleware;
+        foreach ($middleware as $class) {
+            $middlewareClass = new $class(new Session());
+            $middlewareClass->handle();
+        }
         $this->callFunction($route);
     }
 

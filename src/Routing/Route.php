@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 namespace Src\Routing;
+
 class Route
 {
+    public array $middleware = [];
     public string $name;
     private array $parts = [];
     public readonly array $parameters;
@@ -22,6 +24,11 @@ class Route
     public function name(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function middleware(array $middleware): void
+    {
+        array_push($this->middleware, ...$middleware);
     }
 
     /**

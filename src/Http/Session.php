@@ -88,12 +88,12 @@ class Session
     public function generateCSRF(): string
     {
         $token = bin2hex(random_bytes(32));
-        $this->set('user_token', $token);
+        $this->set('csrf_token', $token);
         return $token;
     }
 
     public function verifyCSRF(string $token): bool
     {
-        return $this->get('user_token') === $token;
+        return $this->get('csrf_token') === $token;
     }
 }

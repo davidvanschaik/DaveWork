@@ -6,7 +6,7 @@ namespace Src\Http;
 
 class Response
 {
-    public function __construct(int $response_code)
+    public function __construct()
     {
 
     }

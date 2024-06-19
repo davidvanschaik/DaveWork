@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Controllers\AuthController;
 use App\Controllers\HomeController;
 use App\Controllers\LikeController;
 use App\Controllers\UserController;
+use Src\Middleware\AuthMiddleware;
+use Src\Middleware\ValidationMiddleware;
 use Src\Routing\RouteRegistration as Route;
 
 Route::get('/check', function () {
@@ -21,4 +24,10 @@ Route::get('/like', [LikeController::class, 'index'])->name('like.index');
 Route::get('/like/{id}', [LikeController::class, 'show'])->name('like.show');
 
 Route::get('/home/user/{id}/post', [HomeController::class, 'user'])->name('home.user.show');
+
+Route::get('/login', [AuthController::class, 'make']);
+Route::post('/login', [AuthController::class, 'login'])
+    ->middleware([
+            ValidationMiddleware::class
+        ]);
 

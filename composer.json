@@ -9,8 +9,9 @@
   "require": {
     "fakerphp/faker": "^1.23",
     "vlucas/phpdotenv": "*",
-    "jenssegers/blade": "^2.0",
     "illuminate/database": "^11.10",
-    "symfony/console": "^7.1"
+    "symfony/console": "^7.1",
+    "jenssegers/blade": "^2.0",
+    "illuminate/view": "11.7.0"
   }
 }
