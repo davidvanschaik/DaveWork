@@ -8,7 +8,7 @@ use Src\Http\Session;
 
 interface Middleware
 {
-    public function __construct(Session $session);
+//    public function __construct();
     public function handle();
 
 }

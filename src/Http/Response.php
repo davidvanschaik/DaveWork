@@ -6,7 +6,9 @@ namespace Src\Http;
 
 class Response
 {
-    public function __construct()
+    public function __construct() {}
+
+    public function view()
     {
 
     }

@@ -10,10 +10,6 @@ use Src\Middleware\AuthMiddleware;
 use Src\Middleware\ValidationMiddleware;
 use Src\Routing\RouteRegistration as Route;
 
-Route::get('/check', function () {
-    echo 'this is a test';
-});
-
 Route::get('/home', [HomeController::class, 'index'])->name('home.index');
 Route::get('/home/{id}', [HomeController::class, 'show'])->name('home.show');
 
@@ -26,8 +22,5 @@ Route::get('/like/{id}', [LikeController::class, 'show'])->name('like.show');
 Route::get('/home/user/{id}/post', [HomeController::class, 'user'])->name('home.user.show');
 
 Route::get('/login', [AuthController::class, 'make']);
-Route::post('/login', [AuthController::class, 'login'])
-    ->middleware([
-            ValidationMiddleware::class
-        ]);
+Route::post('/login', [AuthController::class, 'login'])->middleware('validation');
 

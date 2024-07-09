@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Src\Routing;
 
+use Src\Validation\RouteValidation;
+
 class Route
 {
     public array $middleware = [];
@@ -26,7 +28,7 @@ class Route
         $this->name = $name;
     }
 
-    public function middleware(array $middleware): void
+    public function middleware(...$middleware): void
     {
         array_push($this->middleware, ...$middleware);
     }
@@ -39,7 +41,7 @@ class Route
      */
     public function matches($serverUri): bool
     {
-        $validator = new RouteValidator();
+        $validator = new RouteValidation();
 
         if ($validator->validateUri($serverUri, $this->uri)) {
             $this->parameters = $validator->parameters;

@@ -6,13 +6,18 @@ namespace Src\Http;
 
 class Request
 {
+    private static ?Request $instance = null;
     public readonly object $parameters;
-    public function __construct($params)
+    public static array $errors;
+    public static function getInstance(): Request
     {
-        $this->parameters = (object) $params;
+        if (self::$instance == null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
-    public static function method()
+    public function method()
     {
         return $_SERVER['REQUEST_METHOD'];
     }
@@ -22,13 +27,30 @@ class Request
         return $_SERVER['REQUEST_URI'];
     }
 
-    public static function QueryParams()
+    public function QueryParams(): array
     {
         return $_GET;
     }
 
-    public static function BodyParams()
+    public function BodyParams(): array
     {
         return $_POST;
+    }
+
+    public function setErrors(string $key, string $value): void
+        {
+            self::$errors[$key] = $value;
+        }
+
+    public function getErrors()
+    {
+        if (isset(self::$errors)) {
+            return self::$errors;
+        }
+    }
+
+    public function setParameters(array $parameters): void
+    {
+        $this->parameters = (object) $parameters;
     }
 }

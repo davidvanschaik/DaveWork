@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Src\Routing;
+namespace Src\Validation;
 
-class RouteValidator
+class RouteValidation
 {
     public array $parameters = [];
 

@@ -10,10 +10,13 @@ use Src\Interfaces\Middleware;
 class CacheHeaderMiddleware implements Middleware
 {
 
-    public function __construct(Session $session) {}
+    public function __construct()
+    {
+
+    }
 
     public function handle()
     {
-        // TODO: Implement handle() method.
+
     }
 }

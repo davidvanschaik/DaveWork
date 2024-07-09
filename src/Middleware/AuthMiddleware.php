@@ -12,11 +12,14 @@ use Src\Interfaces\Middleware;
 class AuthMiddleware implements Middleware
 {
     protected string $csrfToken;
+    private Request $request;
 
     public function __construct(
         private readonly Session $session
     )
-    {}
+    {
+        $this->request = Request::getInstance();
+    }
 
     public function handle(): bool
     {
@@ -29,7 +32,7 @@ class AuthMiddleware implements Middleware
             $this->csrfToken = $this->session->generateCSRF();
         }
 
-        if (Request::method() == 'POST') {
+        if ($this->request->method() == 'POST') {
             $token = $_POST['csrf_token']  ?? '';
 
             if ($this->session->verifyCSRF($token)) {
