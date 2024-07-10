@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Src\Middleware;
 
+use Src\Core\App;
 use Src\Http\Request;
 use Src\Http\Response;
 use Src\Http\Session;
@@ -18,7 +19,7 @@ class AuthMiddleware implements Middleware
         private readonly Session $session
     )
     {
-        $this->request = Request::getInstance();
+        $this->request = App::getInstance()->resolve('request');
     }
 
     public function handle(): bool

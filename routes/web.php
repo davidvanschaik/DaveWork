@@ -6,8 +6,6 @@ use App\Controllers\AuthController;
 use App\Controllers\HomeController;
 use App\Controllers\LikeController;
 use App\Controllers\UserController;
-use Src\Middleware\AuthMiddleware;
-use Src\Middleware\ValidationMiddleware;
 use Src\Routing\RouteRegistration as Route;
 
 Route::get('/home', [HomeController::class, 'index'])->name('home.index');
@@ -21,6 +19,6 @@ Route::get('/like/{id}', [LikeController::class, 'show'])->name('like.show');
 
 Route::get('/home/user/{id}/post', [HomeController::class, 'user'])->name('home.user.show');
 
-Route::get('/login', [AuthController::class, 'make']);
+Route::get('/login', [AuthController::class, 'make'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->middleware('validation');
 

@@ -10,12 +10,13 @@ class HomeController
 {
     public function index(): void
     {
-        echo 'This is my HomeController index method!';
+        redirect('like.index');
     }
 
     public function show(Request $request): void
     {
         echo "This is my HomeController show method! ID = " . $request->parameters->id;
+        redirect('home.index');
     }
 
     public function user(): void

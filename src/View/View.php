@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Src\Handlers;
+namespace Src\View;
 
 use Jenssegers\Blade\Blade;
 
-class ViewHandler
+class View
 {
     protected Blade $blade;
     public function __construct()
@@ -16,4 +16,8 @@ class ViewHandler
         $this->blade = new Blade($viewsPath, $cachePath);
     }
 
+    public function render(string $templateName, array $data): void
+    {
+       echo $this->blade->render($templateName, $data);
+    }
 }

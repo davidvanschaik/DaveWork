@@ -9,6 +9,7 @@ use Src\Validation\RouteValidation;
 class Route
 {
     public array $middleware = [];
+
     public string $name;
     private array $parts = [];
     public readonly array $parameters;

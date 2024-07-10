@@ -4,29 +4,23 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-require 'function.php';
-
-use App\Helpers\ViewHelper;
 use Src\Http\Request;
-use Jenssegers\Blade\Blade;
+use Src\View\View;
 
 class AuthController
 {
-    public ViewHelper $view;
+    public View $view;
     public function __construct()
     {
-        $this->view = new ViewHelper();
+        $this->view = new View();
     }
     public function make(Request $request): void
     {
-        $errors = $request->getErrors();
-        $this->view->render('login', [
-            'errors' => $errors
-        ]);
+        view('login', []);
     }
 
-    public function login(): void
+    public function login(Request $request): void
     {
-        var_dump($_REQUEST);
+        dd($request->BodyParams());
     }
 }

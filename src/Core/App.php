@@ -4,28 +4,48 @@ declare(strict_types=1);
 
 namespace Src\Core;
 
+use Src\Providers\AppServiceProvider;
+
 class App
 {
-    protected static Container $container;
+    private static self $instance;
+    protected Container $container;
 
-    public static function setContainer($container): void
+    private function __construct(Container $container)
     {
-        self::$container = $container;
+        $this->container = $container;
+        $this->run();
     }
 
-    public static function prototype(string $key, callable $func): void
+    public static function getInstance(): self
     {
-        self::$container->bind($key, $func);
+        if (empty(self::$instance)) {
+            self::$instance = new self(new Container());
+        }
+        return self::$instance;
     }
 
-    public static function singleton($key, $func): void
+    public function run(): void
     {
-        self::$container->shared[$key] = null;
-        self::$container->bind($key, $func);
+        (new AppServiceProvider($this))->register();
     }
 
-    public static function resolve($key): mixed
+    public function prototype(string $key, callable $func): void
     {
-        return self::$container->get($key);
+        $this->container->bind($key, $func);
+    }
+
+    public function singleton(string $key, callable $func): void
+    {
+        $this->container->shared[$key] = null;
+        $this->container->bind($key, $func);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function resolve(string $key): mixed
+    {
+        return $this->container->get($key);
     }
 }
