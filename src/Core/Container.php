@@ -22,7 +22,7 @@ class Container
     public function get(string $key): mixed
     {
         if (array_key_exists($key, $this->shared)) {
-            return $this->returnSingleton($key);
+            return $this->shared[$key];
         }
 
         if (isset($key, $this->instances[$key])) {
@@ -30,13 +30,5 @@ class Container
         }
 
         dd("No match found for $key");
-    }
-
-    private function returnSingleton(string $key): mixed
-    {
-        if ($this->shared[$key] == null) {
-            $this->shared[$key] = $this->instances[$key];
-        }
-        return call_user_func($this->shared[$key]);
     }
 }

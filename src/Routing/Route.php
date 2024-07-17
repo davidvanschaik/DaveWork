@@ -12,7 +12,7 @@ class Route
 
     public string $name;
     private array $parts = [];
-    public readonly array $parameters;
+    public array $parameters;
 
     public function __construct(
         public readonly string $method,

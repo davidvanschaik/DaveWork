@@ -18,9 +18,10 @@ function dd(mixed $var): void
     die();
 }
 
-function view(string $templateName, array $data): void
+function view(string $templateName, array $data = []): string
 {
-    (new View())->render($templateName, $data);
+    $view = App::getInstance()->resolve('view');
+    return $view->render($templateName, $data);
 }
 
 function redirect(string $routeName): void
@@ -33,12 +34,14 @@ function redirect(string $routeName): void
     foreach (Route::$routes as $route) {
        foreach ($route as $info) {
            if ($info->name == $routeName) {
-               if (str_contains($info->name, '{')) {
-                   echo "dit kan helaas niet";
-               }
-
                header("Location:{$info->uri}");
            }
        }
     }
+}
+
+function errors()
+{
+    $session = App::getInstance()->resolve('session');
+    return $session->get('errors');
 }

@@ -26,7 +26,7 @@ class Session
         $_SESSION['LAST_ACTIVE'] = date("H:i:s");
     }
 
-    public function set(string $key, string $value): void
+    public function set(string $key, string | array $value): void
     {
         $_SESSION[$key] = $value;
     }

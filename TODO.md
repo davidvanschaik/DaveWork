@@ -25,11 +25,12 @@ A list of features I would like to build for my framework to keep track on the p
 - Cache Header
 - Require Password
 
-
-
 #### Optional
 - CSRF protection
 - Loggin Middleware
 - Handle Exceptions
 - Encrypted Cookies
+
+# Feedback
+- Validation middleware een validation handler van maken en daarvoor een functie in me request class.
 - 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use Src\Core\App;
 use Src\Http\Request;
 use Src\View\View;
 
@@ -16,11 +17,17 @@ class AuthController
     }
     public function make(Request $request): void
     {
-        view('login', []);
+//        $errors = errors();
+        $errors = [
+            'test' => 'dit is een test bericht',
+            'test2' => 'dit is ook een test bericht'
+        ];
+        echo view('login', ['errors' => $errors]);
     }
 
     public function login(Request $request): void
     {
-        dd($request->BodyParams());
+        $errors = errors();
+        var_dump($errors);
     }
 }

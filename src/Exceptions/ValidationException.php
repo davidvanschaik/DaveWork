@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Src\Exceptions;
 
+use Src\Core\App;
+
 class ValidationException
 {
-    protected array $exceptions = [];
-    public function setException(string $key, string $exception): void
+    public array $errors;
+
+    public function set(string $key, array $message): void
     {
-        $this->exceptions[$key] = $exception;
+        $this->errors[$key] = $message;
     }
 
-    public function getExceptions(): array
+    public function store(): void
     {
-        return $this->exceptions;
+        $request = App::getInstance()->resolve('request');
+        $request->setErrors($this->errors);
     }
 }

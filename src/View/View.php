@@ -12,12 +12,12 @@ class View
     public function __construct()
     {
         $viewsPath = __DIR__ . '/../../resources/views';
-        $cachePath = __DIR__ . '/../../resources/cache';
+        $cachePath = __DIR__ . '/../../storage/cache';
         $this->blade = new Blade($viewsPath, $cachePath);
     }
 
-    public function render(string $templateName, array $data): void
+    public function render(string $templateName, array $data)
     {
-       echo $this->blade->render($templateName, $data);
+       return $this->blade->render($templateName, $data);
     }
 }

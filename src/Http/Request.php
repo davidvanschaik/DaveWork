@@ -7,6 +7,7 @@ namespace Src\Http;
 readonly class Request
 {
     public readonly object $parameters;
+    public readonly array  $errors;
 
     public function method()
     {
@@ -31,5 +32,10 @@ readonly class Request
     public function setParameters(array $parameters): void
     {
         $this->parameters = (object) $parameters;
+    }
+
+    public function setErrors(array $data): void
+    {
+        $this->errors = $data;
     }
 }

@@ -1,0 +1,78 @@
+.title {
+    flex-direction: column;
+    margin-top: 0;
+    margin-bottom: 5vw !important;
+    padding: 2vw 0;
+    font-size: 20px;
+    width: 100vw;
+    box-shadow: 0px 0px 5px 10px rgba(255, 255, 255, 0.5);
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 30px;
+    padding: 3vw;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.log-in, .sign-up, .active {
+    background-color: #121212;
+    border-radius: 5px;
+    border: none;
+    color: #e0e0e0;
+    align-items: center;
+    font-size: 20px;
+    padding: 10px 48px;
+}
+
+.active {
+    box-shadow: 0px 8px 5px -6px rgba(255,255,255,1);
+}
+
+input[type="text"], input[type="password"], .log-in-submit, .sign-up-submit {
+    background-color: #222222;
+    border: none;
+    font-size: 23px;
+    padding: 7px;
+    padding-right: 75px;
+    color: #e0e0e0;
+    border-radius: 5px;
+}
+
+input[type="text"], input[type="password"] {
+    margin-bottom: 5px;
+}
+
+.log-in-submit, .sign-up-submit {
+    background-color: #555555;
+    padding-left: 37.5%;
+    padding-right: 37.5%;
+    display: flex;
+    align-items: center;
+    color: black;
+    margin-top: 2px;
+    box-shadow: 0px 0px 2px 1px white;
+}
+
+.log-in-submit:hover, .sign-up-submit:hover {
+    box-shadow: 0px 0px 5px 2px white;
+    color: white
+}
+
+.log-in-submit {
+    padding-right: 40%;
+    padding-left: 40%;
+}
+
+.error {
+    display: flex;
+    justify-content: center;
+}
+

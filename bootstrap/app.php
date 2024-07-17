@@ -10,9 +10,5 @@ require __DIR__ . '/../routes/web.php';
 
 $app = App::getInstance();
 
-try {
-    $kernel = new Kernel($app->resolve('route'), $app);
-    $kernel->handle();
-} catch (Exception $e) {
-
-}
+$kernel = new Kernel($app->resolve('route'), $app);
+$kernel->handle();

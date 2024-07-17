@@ -37,13 +37,9 @@ class App
 
     public function singleton(string $key, callable $func): void
     {
-        $this->container->shared[$key] = null;
-        $this->container->bind($key, $func);
+        $this->container->shared[$key] = call_user_func($func);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function resolve(string $key): mixed
     {
         return $this->container->get($key);

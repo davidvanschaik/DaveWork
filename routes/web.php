@@ -21,4 +21,5 @@ Route::get('/home/user/{id}/post', [HomeController::class, 'user'])->name('home.
 
 Route::get('/login', [AuthController::class, 'make'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->middleware('validation');
+Route::get('/test', [AuthController::class, 'login'])->name('kanker');
 

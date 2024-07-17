@@ -6,7 +6,6 @@ namespace Src\Middleware;
 
 use Src\Core\App;
 use Src\Http\Request;
-use Src\Http\Session;
 use Src\Interfaces\Middleware;
 use Src\Validation\ProfileValidation;
 
@@ -37,8 +36,9 @@ class ValidationMiddleware implements Middleware
             default => null,
         };
 
+//        $this->validate();
         if (! $this->validate()) {
-            redirect('back');
+            redirect('kanker');
         }
         return true;
     }
@@ -47,18 +47,16 @@ class ValidationMiddleware implements Middleware
     {
         $validation = App::getInstance()->resolve('validation.exception');
 
+        $result = [];
         foreach ($this->validationParams as $key) {
             $method = $key . "Validation";
-            $result = $this->profileValidation->$method();
-
-            if ($result !== null) {
-                $validation->setException($key, $result);
-            }
+            $result[] = $this->profileValidation->$method();
         }
 
-        if (empty($validation->getExceptions())) {
-            return true;
+        if (! empty($result)) {
+            $_SESSION['errors'] = $result;
+            return false;
         }
-        return false;
+        return true;
     }
 }

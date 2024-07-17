@@ -10,7 +10,9 @@ use Src\Exceptions\ValidationException;
 use Src\Handlers\ErrorHandler;
 use Src\Http\Request;
 use Src\Http\Session;
+use Src\Routing\Kernel;
 use Src\Routing\RouteRegistration;
+use Src\View\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton('session', function () {
             return new Session();
+        });
+
+        $this->app->singleton('view', function () {
+            return new View();
         });
 
         $this->app->prototype('error', function () {
