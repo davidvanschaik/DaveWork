@@ -11,14 +11,7 @@ class Session
     public function __construct()
     {
         $this->flashKey = 'flash';
-        $this->start();
-    }
-
-    public function start(): void
-    {
-        if (! session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        session_start();
     }
 
     public function setActive(): void
@@ -31,9 +24,21 @@ class Session
         $_SESSION[$key] = $value;
     }
 
-    public function get(string $key)
+    public function get(string $key): string | array
     {
-        return $_SESSION[$key];
+        if ($key == 'errors') {
+            $this->getErrors($key);
+        }
+        return $_SESSION[$key] ?? [];
+    }
+
+    public function getErrors($key): array
+    {
+        if ($this->has($key)) {
+            $errors = $_SESSION[$key];
+            $this->unset($key);
+        }
+        return $errors ?? [];
     }
 
     public function has(string $key): bool
@@ -49,8 +54,10 @@ class Session
 
     public function unset(string $key, string $flashKey = ''): void
     {
-        $session = $flashKey == '' ? $_SESSION[$key] : $_SESSION[$this->flashKey][$key];
-        unset($session);
+        if ($flashKey == '') {
+            unset($_SESSION[$this->flashKey][$key]);
+        }
+        unset($_SESSION[$key]);
     }
 
     public function generate(): void

@@ -59,6 +59,4 @@
             }
         });
     </script>
-
-    @include('error', ['errors' => $errors])
 @endsection

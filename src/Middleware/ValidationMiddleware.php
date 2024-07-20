@@ -28,17 +28,18 @@ class ValidationMiddleware implements Middleware
         }
 
         match ($this->request->uri()) {
-            '/login' => $this->validationParams = ['email', 'password'],
-            '/register'  => $this->validationParams = ['email', 'password', 'username', 'phone'],
-            '/update-profile' => $this->validationParams = ['email', 'phone'],
-            '/reset-password' => $this->validationParams = ['password'],
-            '/delete-account' | '/forgot-password' => $this->validationParams = ['email'],
-            default => null,
+            '/login'            => $this->validationParams = ['email', 'password'],
+            '/register'         => $this->validationParams = ['email', 'password', 'username', 'phone'],
+            '/update-profile'   => $this->validationParams = ['email', 'phone'],
+            '/reset-password'   => $this->validationParams = ['password'],
+            '/delete-account'   => $this->validationParams = ['email', 'username'],
+            '/forgot-password'  => $this->validationParams = ['email'],
+            default             => null,
         };
 
 //        $this->validate();
         if (! $this->validate()) {
-            redirect('kanker');
+            redirect('back');
         }
         return true;
     }
@@ -50,11 +51,12 @@ class ValidationMiddleware implements Middleware
         $result = [];
         foreach ($this->validationParams as $key) {
             $method = $key . "Validation";
-            $result[] = $this->profileValidation->$method();
+            $result[$key] = $this->profileValidation->$method();
         }
 
+//        dd($result);
         if (! empty($result)) {
-            $_SESSION['errors'] = $result;
+            $validation->store($result);
             return false;
         }
         return true;

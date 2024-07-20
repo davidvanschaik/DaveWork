@@ -43,5 +43,5 @@ function redirect(string $routeName): void
 function errors()
 {
     $session = App::getInstance()->resolve('session');
-    return $session->get('errors');
+    return $session->getErrors('errors');
 }

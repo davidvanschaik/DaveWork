@@ -6,6 +6,7 @@ namespace Src\Exceptions;
 
 abstract class Exception
 {
+    protected array $errors;
 
     abstract function set(string $key, string $message);
 

@@ -17,13 +17,8 @@ class AuthController
     }
     public function make(Request $request): void
     {
-//        $errors = errors();
-//        $errors = [
-//            'test' => 'dit is een test bericht',
-//            'test2' => 'dit is ook een test bericht'
-//        ];
-//        echo view('login', ['errors' => $errors]);
-        echo base64_encode('e86bb2e7d8d517adacbd9da423ae4fd5001db888');
+        $errors = errors();
+        echo view('login', ['errors' => $errors]);
     }
 
     public function login(Request $request): void

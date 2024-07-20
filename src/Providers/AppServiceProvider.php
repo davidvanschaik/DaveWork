@@ -18,10 +18,6 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->singleton('route', function () {
-            return new RouteRegistration();
-        });
-
         $this->app->prototype('request', function () {
             return new Request();
         });

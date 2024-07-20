@@ -7,7 +7,7 @@ namespace Src\Http;
 readonly class Request
 {
     public readonly object $parameters;
-    public readonly array  $errors;
+    public array $errors;
 
     public function method()
     {
@@ -36,6 +36,11 @@ readonly class Request
 
     public function setErrors(array $data): void
     {
-        $this->errors = $data;
+        $this->errors = $data ?? [];
+    }
+
+    public function getErrors(): array
+    {
+        return $this->errors ?? [];
     }
 }

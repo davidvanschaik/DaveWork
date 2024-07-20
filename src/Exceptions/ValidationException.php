@@ -15,9 +15,9 @@ class ValidationException
         $this->errors[$key] = $message;
     }
 
-    public function store(): void
+    public function store($errors): void
     {
-        $request = App::getInstance()->resolve('request');
-        $request->setErrors($this->errors);
+        $session = App::getInstance()->resolve('session');
+        $session->set('errors', $errors);
     }
 }

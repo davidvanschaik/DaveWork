@@ -14,13 +14,12 @@ class App
     private function __construct(Container $container)
     {
         $this->container = $container;
-        $this->run();
     }
 
     public static function getInstance(): self
     {
         if (empty(self::$instance)) {
-            self::$instance = new self(new Container());
+            self::$instance = new App(new Container());
         }
         return self::$instance;
     }
