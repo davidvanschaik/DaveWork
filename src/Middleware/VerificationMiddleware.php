@@ -13,6 +13,6 @@ class VerificationMiddleware implements Middleware
 
     public function handle()
     {
-        // TODO: Implement handle() method.
+
     }
 }

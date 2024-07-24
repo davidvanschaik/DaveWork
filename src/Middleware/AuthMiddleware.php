@@ -28,13 +28,12 @@ class AuthMiddleware implements Middleware
             redirect('back');
         }
 
-        if ($this->request->method() == 'POST' && $this->session->has('user_id')) {
-            $token = $_POST['csrf_token'];
-
-            if ($this->session->verifyCSRF($token)) {
-                $this->handleError('Invalid CSRF Token', 403);
+        if (! $this->session->has('csrf_token')) {
+            $this->setCSRFtoken();
+        } else {
+            if (! $this->verifyCSRFtoken()) {
+                return false;
             }
-            return false;
         }
         return true;
     }
@@ -47,14 +46,16 @@ class AuthMiddleware implements Middleware
         return true;
     }
 
-    public function verifyCSRFtoken(): bool
+    public function setCSRFtoken(): void
     {
         if ($this->request->method() == 'POST' && $this->session->has('user_id')) {
-            $token = $_POST['csrf_token'];
+            $this->csrfToken = $_POST['csrf_token'];
+        }
+    }
 
-            if ($this->session->verifyCSRF($token)) {
-                $this->handleError('Invalid CSRF Token');
-            }
+    public function verifyCSRFtoken(): bool
+    {
+        if ($this->session->verifyCSRF($this->csrfToken)) {
             return false;
         }
         return true;
