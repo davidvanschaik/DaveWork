@@ -16,7 +16,6 @@ class ConnectionHandler
         $this->capsule = new Capsule();
 
         $this->capsule->addConnection($options);
-
         $this->capsule->setAsGlobal();
         $this->capsule->bootEloquent();
     }
@@ -29,7 +28,5 @@ class ConnectionHandler
     public function getSchema(): Schema
     {
         return $this->capsule->schema();
-        
     }
-
 }

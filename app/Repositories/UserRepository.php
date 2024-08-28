@@ -2,49 +2,52 @@
 
 declare(strict_types=1);
 
-namespace App\RepositoryRepository;
+namespace App\Repositories;
 
-use RedBeanPHP\R;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
-class DataController
+class UserRepository
 {
-    public static function createUser($username, $email, $password): int|string
+    public function fetchAll(): Collection
     {
-        $user = [
-            'username' => $username,
-            'email' => $email,
-            'password' => password_hash($password, PASSWORD_DEFAULT)
-        ];
-        return R::store(R::dispense('users')->import($user));
+        return User::all();
     }
 
-    public static function loginUser($username, $password)
+    public function insert(array $userInfo): Model
     {
-        var_dump($username, $password);
+        return User::create($userInfo);
+    }
 
-        $user = R::findOne('users', 'username = ?', [$username]);
-        if ($user->username == $username && password_verify($password, $user->password)) {
-            return $user;
+    public function signUp(array $data)
+    {
+        if ($errors = $this->checkIfUserCredentialsExist($data) != null) {
+            return $errors;
         }
-        return false;
+
+        return $this->insert([
+            'email' => $data['email'],
+            'username' => $data['username'],
+            'password' => password_hash($data['password'], PASSWORD_BCRYPT),
+            'phone' => $data['phone'],
+        ]);
     }
 
-    public static function updateUser($id, $username, $email, $password)
+    public function checkIfUserCredentialsExist(array $data): array | string | null
     {
-        $user = R::load('users', $id);
-        $user->username = $username;
-        $user->email = $email;
-        $user->password = password_hash($password, PASSWORD_DEFAULT);
-        return R::store($user);
+        foreach (['email', 'username', 'phone'] as $info) {
+            $user = $this->findUser($info, $data[$info]);
+            if ($user != null) {
+                $errors[$info] = ucfirst($info) . ' already in use';
+                break;
+            }
+        }
+        return $errors ?? null;
     }
 
-    public static function createPost($title, $content, $user_id)
+    private function findUser(string $row, string $userData)
     {
-        $post = [
-            'title' => $title,
-            'content' => $content,
-            'user_id' => $user_id
-        ];
-        return R::store(R::dispense('posts')->import($post));
+        return User::where($row, $userData)->first();
     }
 }

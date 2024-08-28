@@ -1,7 +1,17 @@
-return [
-    'DB_CONNECTION' = 'mysql'
-    'DB_HOST' = 'localhost:3306'
-    'DB_DATABASE' = 'Binsta'
-    'DB_USERNAME' = 'root'
-    'DB_PASSWORD' = ''
+<?php
+
+use Src\Providers\DatabaseServiceProvider as DB;
+
+$options = [
+    'driver'    => 'mysql',
+    'host'      => '127.0.0.1',
+    'port'      => '3306',
+    'database'  => 'Binsta',
+    'username'  => 'root',
+    'password'  => '',
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix'    => '',
 ];
+
+DB::register($options);
