@@ -48,11 +48,6 @@
             const usernameRow = document.getElementById('username-row');
             const confirmPasswordRow = document.getElementById('confirm-password-row');
             const phoneRow = document.getElementById('phone-row');
-            const errorPopup = document.querySelector('.error');
-
-            const usernameInput = document.querySelector('#username-row input');
-            const confirmPasswordInput = document.querySelector('#confirm-password-row input');
-            const phoneInput = document.querySelector('#phone-row input');
 
             document.getElementById('show-login').addEventListener('click', function () {
                 usernameRow.classList.add('hidden');
