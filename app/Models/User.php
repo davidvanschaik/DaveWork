@@ -12,10 +12,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class User extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'name',
         'email',
-        'password',
+        'username',
+        'phone',
+        'password'
     ];
 
     protected $hidden = ['password'];

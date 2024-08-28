@@ -10,7 +10,7 @@ class HomeController
 {
     public function index(): void
     {
-        redirect('like.index');
+        echo 'This is my HomeController->index()!';
     }
 
     public function show(Request $request): void

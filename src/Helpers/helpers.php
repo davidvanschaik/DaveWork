@@ -8,13 +8,18 @@ use Src\Http\Request;
 use Src\Routing\RouteRegistration as Route;
 use Src\View\View;
 
-#[NoReturn]
+
 function dd(mixed $var): void
 {
+    $location = debug_backtrace();
     echo "<pre>";
-    var_dump($var);
-    echo "</pre>";
 
+    echo 'File: ' . $location[0]['file'] . PHP_EOL;
+    echo 'Line: ' . $location[0]['line'] . PHP_EOL;
+
+    var_dump($var);
+
+    echo "</pre>";
     die();
 }
 

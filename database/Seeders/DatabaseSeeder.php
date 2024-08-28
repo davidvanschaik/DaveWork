@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Seeders;
+namespace Database\Seeders;
 
 class DatabaseSeeder
 {

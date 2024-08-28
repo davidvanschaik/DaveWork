@@ -27,7 +27,7 @@ A list of features I would like to build for my framework to keep track on the p
 
 #### Optional
 - CSRF protection
-- Loggin Middleware
+- Log Middleware
 - Handle Exceptions
 - Encrypted Cookies
 

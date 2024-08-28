@@ -20,7 +20,6 @@ class UserMigration implements Migration
             $table->string('phone');
             $table->timestamps();
         });
-
     }
 
     public static function down(ConnectionHandler $connection): void

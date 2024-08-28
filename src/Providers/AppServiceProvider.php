@@ -10,8 +10,6 @@ use Src\Exceptions\ValidationException;
 use Src\Handlers\ErrorHandler;
 use Src\Http\Request;
 use Src\Http\Session;
-use Src\Routing\Kernel;
-use Src\Routing\RouteRegistration;
 use Src\View\View;
 
 class AppServiceProvider extends ServiceProvider
@@ -42,10 +40,4 @@ class AppServiceProvider extends ServiceProvider
             return new SyntaxExceptions();
         });
     }
-
-    public function boot()
-    {
-
-    }
-
 }

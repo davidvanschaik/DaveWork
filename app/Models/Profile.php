@@ -11,6 +11,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Profile extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'user_id',
+        'bio',
+        'avatar',
+        'location'
+    ];
 
     public function user(): HasOne
     {
