@@ -22,7 +22,7 @@ class AuthMiddleware implements Middleware
         $this->session = App::getInstance()->resolve('session');
     }
 
-    public function handle(): bool
+    public function handle(Request $request, \Closure $next): callable
     {
         if (! $this->checkIfUserIsLoggedIn()) {
             redirect('back');
@@ -31,11 +31,11 @@ class AuthMiddleware implements Middleware
         if (! $this->session->has('csrf_token')) {
             $this->setCSRFtoken();
         } else {
-            if (! $this->verifyCSRFtoken()) {
-                return false;
+            if (! $this->verifyCSRFToken()) {
+                return $next($request);
             }
         }
-        return true;
+        return $next($request);
     }
 
     public function checkIfUserIsLoggedIn(): bool
@@ -46,14 +46,14 @@ class AuthMiddleware implements Middleware
         return true;
     }
 
-    public function setCSRFtoken(): void
+    public function setCSRFToken(): void
     {
         if ($this->request->method() == 'POST' && $this->session->has('user_id')) {
             $this->csrfToken = $_POST['csrf_token'];
         }
     }
 
-    public function verifyCSRFtoken(): bool
+    public function verifyCSRFToken(): bool
     {
         if ($this->session->verifyCSRF($this->csrfToken)) {
             return false;

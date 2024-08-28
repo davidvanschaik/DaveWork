@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Src\Middleware;
 
 use Src\Core\App;
-use Src\Http\Session;
+use Src\Http\{Request, Session};
 use Src\Interfaces\Middleware;
 
 class SessionMiddleware implements Middleware
@@ -15,16 +15,15 @@ class SessionMiddleware implements Middleware
     {
         $this->session = App::getInstance()->resolve('session');
     }
-        public function handle(): bool
+        public function handle(Request $request, \Closure $next): callable
         {
-            if (! $this->checkIfUserIsLoggedIn()) {
-                return;
-            }
-
+            $this->checkIfUserIsLoggedIn();
             $this->session->setActive();
+
+            return $next($request);
         }
 
-        private function checkIfUserIsLoggedIn(): bool
+        private function checkIfUserIsLoggedIn()
         {
 
         }

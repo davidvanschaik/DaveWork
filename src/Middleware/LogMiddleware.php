@@ -7,10 +7,11 @@ namespace Src\Middleware;
 use Src\Http\Request;
 use Src\Interfaces\Middleware;
 
-class PermissionMiddleware implements Middleware
+class LogMiddleware implements Middleware
 {
     public function handle(Request $request, \Closure $next): callable
     {
+        echo 'Log middleware running';
         return $next($request);
     }
 }

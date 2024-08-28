@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Src\Routing;
 
+use Exception;
 use Src\Core\App;
 use Src\Http\Request;
-use Src\Middleware\AuthMiddleware;
-use Src\Middleware\ValidationMiddleware;
+use Src\Middleware\MiddlewarePipeline;
 
 class Kernel
 {
-    private array $middlewareMap;
     private Route $currentRoute;
     private Request $request;
 
@@ -20,17 +19,16 @@ class Kernel
         private readonly App $app,
     ) {
         $this->request = $this->app->resolve('request');
-        $this->middlewareMap = [
-            'validation' => new ValidationMiddleware(),
-            'auth' => new AuthMiddleware($this->app->resolve('session')),
-        ];
     }
 
-    private function setCurrentRoute(Route $route): void
+    public function setCurrentRoute(Route $route): void
     {
         $this->currentRoute = $route;
     }
 
+    /**
+     * @throws Exception
+     */
     public function handle(): void
     {
         $route = $this->routeRegistration->findRoute($this->request->method(), $this->request->uri());
@@ -39,30 +37,27 @@ class Kernel
             $this->setCurrentRoute($route);
         }
 
-        if (! $route) {
-            http_response_code(404);
-            return;
-        }
-
         $this->middleware($route);
     }
 
     /**
-     * @param Route $route
-     * @return void
+     * @throws Exception
      */
     private function middleware(Route $route): void
     {
-        foreach ($route->middleware as $middleware) {
-            $middleware = $this->middlewareMap[$middleware];
-            $middleware->handle();
-        }
+        (new MiddlewarePipeline($route, $this, $this->request))->run();
+    }
 
+    /**
+     * @throws Exception
+     */
+    public function handleFinalMiddleware(Route $route): void
+    {
         $this->setCurrentRoute($route);
         $this->callFunction($route);
     }
 
-    private function callFunction(Route $route): void
+    public function callFunction(Route $route): void
     {
         $action = $route->action;
 

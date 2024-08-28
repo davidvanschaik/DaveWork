@@ -5,59 +5,95 @@ declare(strict_types=1);
 namespace Src\Middleware;
 
 use Src\Core\App;
+use Src\Exceptions\ValidationException;
 use Src\Http\Request;
 use Src\Interfaces\Middleware;
 use Src\Validation\ProfileValidation;
 
 class ValidationMiddleware implements Middleware
 {
-    private Request $request;
+    private static Request $request;
     private ProfileValidation $profileValidation;
     private array $validationParams;
+    private ValidationException $exception;
+    private static array $postData;
 
     public function __construct()
     {
-        $this->request = App::getInstance()->resolve('request');
-        $this->profileValidation = new ProfileValidation($this->request->BodyParams());
+        self::$request = App::getInstance()->resolve('request');
+        $this->profileValidation = new ProfileValidation(self::$postData = self::$request->bodyParams());
+        $this->exception = App::getInstance()->resolve('validation.exception');
     }
 
-    public function handle(): bool
+    public function handle(Request $request, \Closure $next): callable
     {
-        if (! $this->request->method() == 'POST') {
+        if (! self::$request->method() == 'POST') {
             exit();
         }
 
-        match ($this->request->uri()) {
-            '/login'            => $this->validationParams = ['email', 'password'],
-            '/register'         => $this->validationParams = ['email', 'password', 'username', 'phone'],
-            '/update-profile'   => $this->validationParams = ['email', 'phone'],
-            '/reset-password'   => $this->validationParams = ['password'],
-            '/delete-account'   => $this->validationParams = ['email', 'username'],
-            '/forgot-password'  => $this->validationParams = ['email'],
-            default             => null,
-        };
+        $this->setValidationParams();
+        $this->checkIfRequestIsLogIn();
 
-//        $this->validate();
         if (! $this->validate()) {
             redirect('back');
         }
-        return true;
+        return $next($request);
+    }
+
+    private function setValidationParams(): void
+    {
+        match (self::$request->uri()) {
+            '/login' => $this->validationParams = ['email', 'password'],
+            '/update-profile' => $this->validationParams = ['email', 'phone'],
+            '/reset-password' => $this->validationParams = ['password'],
+            '/delete-account' => $this->validationParams = ['email', 'username'],
+            '/forgot-password' => $this->validationParams = ['email'],
+            default => null,
+        };
+    }
+
+    private function checkIfRequestIsLogIn(): void
+    {
+        if (self::$postData['submit'] !== 'Log In') {
+           array_push($this->validationParams, 'username', 'phone');
+           return;
+        }
+        $this->unsetSignUpData();
+    }
+
+    /**
+     * @return void
+     * Because I handle sign-up and log in from the same uri
+     * I need to the unset the sign-up values if the request is log in
+     */
+    private function unsetSignUpData(): void
+    {
+        $array = ['username', 'confirm', 'phone'];
+        foreach ($array as $info) {
+            self::$request->unsetPost($info);
+        }
     }
 
     private function validate(): bool
     {
-        $validation = App::getInstance()->resolve('validation.exception');
+        $this->callFunction();
+        return $this->handleErrors();
+    }
 
-        $result = [];
+    public function callFunction(): void
+    {
         foreach ($this->validationParams as $key) {
-            $method = $key . "Validation";
-            $result[$key] = $this->profileValidation->$method();
+            $this->exception->set($key, $this->profileValidation->{$key . "Validation"}());
         }
+    }
 
-//        dd($result);
-        if (! empty($result)) {
-            $validation->store($result);
-            return false;
+    private function handleErrors(): bool
+    {
+        foreach ($this->exception->errors as $error) {
+            if (is_string($error)) {
+                $this->exception->store($this->exception->errors);
+                return false;
+            }
         }
         return true;
     }
