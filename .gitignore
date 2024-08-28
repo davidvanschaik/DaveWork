@@ -249,4 +249,4 @@ Desktop.ini
 $RECYCLE.BIN/
 _NCrunch*
 */cache
-*.idea
+*.idea/
