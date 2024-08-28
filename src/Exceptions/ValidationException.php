@@ -10,14 +10,19 @@ class ValidationException
 {
     public array $errors;
 
-    public function set(string $key, array $message): void
+    public function set(string $key, mixed $message): void
     {
         $this->errors[$key] = $message;
     }
 
-    public function store($errors): void
+    public function store(array $error): void
     {
         $session = App::getInstance()->resolve('session');
-        $session->set('errors', $errors);
+        $session->set('errors', $error);
+    }
+
+    public function checkIfErrorsSet(): bool
+    {
+        return isset($this->errors);
     }
 }

@@ -19,19 +19,34 @@ readonly class Request
         return $_SERVER['REQUEST_URI'];
     }
 
-    public function QueryParams(): array
+    public function queryParams(): array
     {
         return $_GET;
     }
 
-    public function BodyParams(): array
+    public function bodyParams(): array
     {
         return $_POST;
     }
 
+    public function unsetPost(string $key): void
+    {
+        unset($_POST[$key]);
+    }
+
+    public function unsetGet(string $key): void
+    {
+        unset($_GET[$key]);
+    }
+
     public function setParameters(array $parameters): void
     {
-        $this->parameters = (object) $parameters;
+        $this->parameters = (object)$parameters;
+    }
+
+    public function getParameters(array $parameters): object
+    {
+        return $this->parameters ?? new \stdClass();
     }
 
     public function setErrors(array $data): void

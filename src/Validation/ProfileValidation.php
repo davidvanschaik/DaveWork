@@ -13,18 +13,27 @@ class ProfileValidation
         self::$data = $data;
     }
 
-    public static function set($data): bool
+    /**
+     * check if user is sending an login form or sign up form
+     */
+    public static function checkForm(): bool
     {
-        if (isset(self::$data[$data])) {
-            return true;
-        }
-        return false;
+        return self::$data['submit'] == 'Log In';
     }
 
-    public static function emailValidation(): ?string
+    private static function set(string $data): bool
+    {
+        return ! empty(self::$data[$data]);
+    }
+
+    public static function emailValidation(): string | bool
     {
         if (! self::set('email')) {
             return 'Email is required';
+        }
+
+        if (self::checkForm()) {
+            return true;
         }
 
         $sanitizedEmail = filter_var(self::$data['email'], FILTER_SANITIZE_EMAIL);
@@ -32,51 +41,67 @@ class ProfileValidation
         if (! filter_var($sanitizedEmail, FILTER_VALIDATE_EMAIL)) {
             return 'Invalid email format';
         }
-        return null;
+        return true;
     }
 
-    public static function passwordValidation(): ?string
+    public static function passwordValidation(): string | bool
     {
         if (! self::set('password')) {
             return 'Password is required';
         }
 
-        if (isset(self::$data['conf-password'])) {
-            if (self::$data['password'] !== self::$data['conf-password']) {
+        if (self::checkForm()) {
+            return true;
+        }
+
+        if (! self::set(self::$data['confirm'])) {
+            if (! self::match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/', 'password')) {
+                return 'Password must contain at least one letter, one number and one special character';
+            }
+            if (self::$data['password'] != self::$data['confirm']) {
                 return 'Passwords do not match';
             }
         }
-
-        $pattern = '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/';
-        if (! preg_match($pattern, self::$data['password'])) {
-            return 'Password must contain at least one letter, one number and one special character';
-        }
-        return null;
+        return true;
     }
 
-    public static function phoneValidation(): ?string
+    public static function usernameValidation(): string | bool
     {
-        if (! self::set('phone')) {
-            return 'Phone is required';
+        if (self::checkForm()) {
+            return true;
         }
 
-        $pattern = '/^(\+|\d)[0-9]{7,16}$/;';
-        if (! preg_match($pattern, self::$data['phone'])) {
-            return 'Invalid phone number';
-        }
-        return null;
-    }
-
-    public static function usernameValidation(): ?string
-    {
         if (! self::set('username')) {
             return 'Username is required';
         }
 
-        $pattern = '/^[a-zA-Z0-9_]{5,20}$/';
-        if (! preg_match($pattern, self::$data['username'])) {
+        if (! self::match('/^[a-zA-Z0-9_]{5,20}$/', 'username')) {
             return 'Username must be between 5 and 20 characters';
         }
-        return null;
+        return true;
+    }
+
+    public static function phoneValidation(): bool | string
+    {
+        if (self::checkForm()) {
+            return true;
+        }
+
+        if (! self::set('phone')) {
+            return 'Phone is required';
+        }
+
+        if (! self::match('/^(\+|\d)[0-9]{7,16}$/', 'phone')) {
+            return 'Invalid phone number';
+        }
+        return true;
+    }
+
+    private static function match(string $pattern, string $data): bool
+    {
+        if (! preg_match($pattern, self::$data[$data])) {
+            return false;
+        }
+        return true;
     }
 }
