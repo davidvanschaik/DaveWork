@@ -24,14 +24,16 @@ class Route
      * @param string $name
      * @return void
      */
-    public function name(string $name): void
+    public function name(string $name): self
     {
         $this->name = $name;
+        return $this;
     }
 
-    public function middleware(...$middleware): void
+    public function middleware(...$middleware): self
     {
         array_push($this->middleware, ...$middleware);
+        return $this;
     }
 
     /**

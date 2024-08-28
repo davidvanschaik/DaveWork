@@ -13,7 +13,8 @@ class RouteRegistration
 
     private static function register(string $method, string $uri, array|callable $action): Route
     {
-        return self::$routes[$method][$uri] = new Route($method, $uri, $action);
+        self::$routes[$method][$uri] = $route = new Route($method, $uri, $action);
+        return $route;
     }
 
     public static function get(string $uri, array|callable $action): Route
