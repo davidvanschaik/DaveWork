@@ -25,7 +25,7 @@ class ValidationMiddleware implements Middleware
         $this->exception = App::getInstance()->resolve('validation.exception');
     }
 
-    public function handle(Request $request, \Closure $next): callable
+    public function handle(Request $request, \Closure $next): mixed
     {
         if (! self::$request->method() == 'POST') {
             exit();
@@ -36,6 +36,7 @@ class ValidationMiddleware implements Middleware
 
         if (! $this->validate()) {
             redirect('back');
+            return false;
         }
         return $next($request);
     }
@@ -55,8 +56,8 @@ class ValidationMiddleware implements Middleware
     private function checkIfRequestIsLogIn(): void
     {
         if (self::$postData['submit'] !== 'Log In') {
-           array_push($this->validationParams, 'username', 'phone');
-           return;
+            array_push($this->validationParams, 'username', 'phone');
+            return;
         }
         $this->unsetSignUpData();
     }
@@ -89,12 +90,23 @@ class ValidationMiddleware implements Middleware
 
     private function handleErrors(): bool
     {
-        foreach ($this->exception->errors as $error) {
-            if (is_string($error)) {
-                $this->exception->store($this->exception->errors);
-                return false;
-            }
+        $errors = $this->checkIfErrorIsSet($this->exception->errors);
+
+        if (! empty($errors)) {
+            $this->exception->store($errors);
+            return false;
         }
         return true;
+    }
+
+    private function checkIfErrorIsSet(array $errors): array
+    {
+        $errors = [];
+        foreach ($this->exception->errors as $error) {
+            if (is_string($error)) {
+                $errors[] = $error;
+            }
+        }
+        return $errors;
     }
 }

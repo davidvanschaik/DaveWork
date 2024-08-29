@@ -22,7 +22,8 @@ class UserRepository
 
     public function signUp(array $data)
     {
-        if ($errors = $this->checkIfUserCredentialsExist($data) != null) {
+        $errors = $this->checkIfUserCredentialsExist($data);
+        if ($errors != null) {
             return $errors;
         }
 
@@ -34,8 +35,9 @@ class UserRepository
         ]);
     }
 
-    public function checkIfUserCredentialsExist(array $data): array | string | null
+    public function checkIfUserCredentialsExist(array $data): array | string
     {
+        $errors = [];
         foreach (['email', 'username', 'phone'] as $info) {
             $user = $this->findUser($info, $data[$info]);
             if ($user != null) {
@@ -43,7 +45,7 @@ class UserRepository
                 break;
             }
         }
-        return $errors ?? null;
+        return $errors;
     }
 
     private function findUser(string $row, string $userData)

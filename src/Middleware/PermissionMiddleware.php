@@ -9,7 +9,7 @@ use Src\Interfaces\Middleware;
 
 class PermissionMiddleware implements Middleware
 {
-    public function handle(Request $request, \Closure $next): callable
+    public function handle(Request $request, \Closure $next): mixed
     {
         return $next($request);
     }

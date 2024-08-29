@@ -15,7 +15,7 @@ class SessionMiddleware implements Middleware
     {
         $this->session = App::getInstance()->resolve('session');
     }
-        public function handle(Request $request, \Closure $next): callable
+        public function handle(Request $request, \Closure $next): mixed
         {
             $this->checkIfUserIsLoggedIn();
             $this->session->setActive();

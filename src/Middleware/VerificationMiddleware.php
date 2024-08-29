@@ -11,7 +11,7 @@ class VerificationMiddleware implements Middleware
 {
     public function __construct() {}
 
-    public function handle(Request $request, \Closure $next):callable
+    public function handle(Request $request, \Closure $next): mixed
     {
         return $next($request);
     }

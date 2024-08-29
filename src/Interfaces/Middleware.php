@@ -8,5 +8,5 @@ use Src\Http\Request;
 
 interface Middleware
 {
-    public function handle(Request $request, \Closure $next): callable;
+    public function handle(Request $request, \Closure $next): mixed;
 }

@@ -9,13 +9,7 @@ use Src\Interfaces\Middleware;
 
 class CacheMiddleware implements Middleware
 {
-
-    public function __construct()
-    {
-
-    }
-
-    public function handle(Request $request, \Closure $next): callable
+    public function handle(Request $request, \Closure $next): mixed
     {
         echo 'Cache middleware running';
         return $next($request);

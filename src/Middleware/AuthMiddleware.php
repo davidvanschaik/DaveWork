@@ -22,7 +22,7 @@ class AuthMiddleware implements Middleware
         $this->session = App::getInstance()->resolve('session');
     }
 
-    public function handle(Request $request, \Closure $next): callable
+    public function handle(Request $request, \Closure $next): mixed
     {
         if (! $this->checkIfUserIsLoggedIn()) {
             redirect('back');
@@ -32,7 +32,7 @@ class AuthMiddleware implements Middleware
             $this->setCSRFtoken();
         } else {
             if (! $this->verifyCSRFToken()) {
-                return $next($request);
+                return false;
             }
         }
         return $next($request);
