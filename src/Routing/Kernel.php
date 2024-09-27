@@ -36,7 +36,6 @@ class Kernel
         if (empty($this->currentRoute)) {
             $this->setCurrentRoute($route);
         }
-
         $this->middleware($route);
     }
 
@@ -57,6 +56,9 @@ class Kernel
         $this->callFunction($route);
     }
 
+    /**
+     * $action is the Controller + method you pass in web.php ([AuthController::class, 'index')
+     */
     public function callFunction(Route $route): void
     {
         $action = $route->action;

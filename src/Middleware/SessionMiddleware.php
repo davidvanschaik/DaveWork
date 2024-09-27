@@ -11,20 +11,25 @@ use Src\Interfaces\Middleware;
 class SessionMiddleware implements Middleware
 {
     private Session $session;
+
     public function __construct()
     {
         $this->session = App::getInstance()->resolve('session');
     }
-        public function handle(Request $request, \Closure $next): mixed
-        {
-            $this->checkIfUserIsLoggedIn();
-            $this->session->setActive();
 
-            return $next($request);
+    public function handle(Request $request, \Closure $next): mixed
+    {
+        $this->checkIfUserIsLoggedIn();
+        $this->session->setActive();
+
+        return $next($request);
+    }
+
+    private function checkIfUserIsLoggedIn(): void
+    {
+        if (isset($_SESSION['user_id'])) {
+            redirect('login');
+            exit;
         }
-
-        private function checkIfUserIsLoggedIn()
-        {
-
-        }
+    }
 }

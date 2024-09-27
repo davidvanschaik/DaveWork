@@ -32,7 +32,6 @@ class ValidationMiddleware implements Middleware
         }
 
         $this->setValidationParams();
-        $this->checkIfRequestIsLogIn();
 
         if (! $this->validate()) {
             redirect('back');
@@ -44,13 +43,14 @@ class ValidationMiddleware implements Middleware
     private function setValidationParams(): void
     {
         match (self::$request->uri()) {
-            '/login' => $this->validationParams = ['email', 'password'],
-            '/update-profile' => $this->validationParams = ['email', 'phone'],
-            '/reset-password' => $this->validationParams = ['password'],
-            '/delete-account' => $this->validationParams = ['email', 'username'],
+            '/login'           => $this->validationParams = ['email', 'password'],
+            '/update-profile'  => $this->validationParams = ['email', 'phone'],
+            '/reset-password'  => $this->validationParams = ['password'],
+            '/delete-account'  => $this->validationParams = ['email', 'username'],
             '/forgot-password' => $this->validationParams = ['email'],
-            default => null,
+            default            => null,
         };
+        $this->checkIfRequestIsLogIn();
     }
 
     private function checkIfRequestIsLogIn(): void
@@ -99,7 +99,7 @@ class ValidationMiddleware implements Middleware
         return true;
     }
 
-    private function checkIfErrorIsSet(array $errors): array
+    private function checkIfErrorIsSet(): array
     {
         $errors = [];
         foreach ($this->exception->errors as $error) {

@@ -68,7 +68,7 @@ class MiddlewarePipeline
             array_reverse($this->middlewareStack),
             function ($next, $middleware) {
                 return function ($request) use ($middleware, $next) {
-                    if ($middleware->handle($request, $next) === false) {
+                    if (! $middleware->handle($request, $next)) {
                         return function () {};
                     }
                 };

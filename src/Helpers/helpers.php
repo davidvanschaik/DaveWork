@@ -2,12 +2,8 @@
 
 declare(strict_types=1);
 
-use JetBrains\PhpStorm\NoReturn;
 use Src\Core\App;
-use Src\Http\Request;
 use Src\Routing\RouteRegistration as Route;
-use Src\View\View;
-
 
 function dd(mixed $var): void
 {
@@ -15,8 +11,7 @@ function dd(mixed $var): void
     echo "<pre>";
 
     echo 'File: ' . $location[0]['file'] . PHP_EOL;
-    echo 'Line: ' . $location[0]['line'] . PHP_EOL;
-
+    echo 'Line: ' . $location[0]['line'] . PHP_EOL . PHP_EOL;
     var_dump($var);
 
     echo "</pre>";

@@ -14,7 +14,7 @@ class ProfileValidation
     }
 
     /**
-     * check if user is sending an login form or sign up form
+     * check if user is sending a login form or sign up form
      */
     public static function checkForm(): bool
     {

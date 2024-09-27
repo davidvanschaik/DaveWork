@@ -24,10 +24,6 @@ class RouteValidation
         return false;
     }
 
-    /**
-     * @param string $uri
-     * @return array
-     */
     private function extractParts(string $uri): array
     {
         $uriParts = explode('?', $uri);
@@ -36,10 +32,6 @@ class RouteValidation
         return $this->isParameter($routeParts);
     }
 
-    /**
-     * @param array $parts
-     * @return array
-     */
     private function isParameter(array $parts): array
     {
         $uri = [];
@@ -57,11 +49,6 @@ class RouteValidation
         return $uri;
     }
 
-    /**
-     * @param array $serverUri
-     * @param array $routeUri
-     * @return bool
-     */
     private function countParts(array $serverUri, array $routeUri): bool
     {
         $this->setParameters($serverUri, $routeUri);
@@ -83,11 +70,6 @@ class RouteValidation
         return true;
     }
 
-    /**
-     * @param array $serverUri
-     * @param array $routeUri
-     * @return void
-     */
     private function setParameters(array &$serverUri, array $routeUri): void
     {
         foreach ($routeUri as $key => $part) {

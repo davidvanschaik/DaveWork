@@ -11,7 +11,6 @@ class Route
     public array $middleware = [];
 
     public string $name;
-    private array $parts = [];
     public array $parameters;
 
     public function __construct(
@@ -20,10 +19,6 @@ class Route
         public readonly mixed $action,
     ) {}
 
-    /**
-     * @param string $name
-     * @return void
-     */
     public function name(string $name): self
     {
         $this->name = $name;

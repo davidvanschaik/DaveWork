@@ -10,7 +10,7 @@ class HomeController
 {
     public function index(): void
     {
-        echo 'This is my HomeController->index()!';
+        dd($_SESSION);
     }
 
     public function show(Request $request): void

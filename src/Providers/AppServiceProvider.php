@@ -12,6 +12,7 @@ use Src\Http\Request;
 use Src\Http\Session;
 use Src\View\View;
 
+// TODO breaking up the service providers in categories
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void

@@ -11,7 +11,7 @@ class RouteRegistration
      */
     public static array $routes = [];
 
-    private static function register(string $method, string $uri, array|callable $action): Route
+    private static function register(string $method, string $uri, array | callable $action): Route
     {
         self::$routes[$method][$uri] = $route = new Route($method, $uri, $action);
         return $route;
@@ -22,17 +22,17 @@ class RouteRegistration
         return self::register('GET', $uri, $action);
     }
 
-    public static function post(string $uri, array|callable $action): Route
+    public static function post(string $uri, array | callable $action): Route
     {
         return self::register('POST', $uri, $action);
     }
 
-    public static function delete(string $uri, array|callable $action): Route
+    public static function delete(string $uri, array | callable $action): Route
     {
         return self::register('DELETE', $uri, $action);
     }
 
-    public static function put(string $uri, array|callable $action): Route
+    public static function put(string $uri, array | callable $action): Route
     {
         return self::register('PUT', $uri, $action);
     }

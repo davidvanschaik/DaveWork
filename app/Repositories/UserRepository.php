@@ -10,17 +10,12 @@ use Illuminate\Support\Collection;
 
 class UserRepository
 {
-    public function fetchAll(): Collection
-    {
-        return User::all();
-    }
-
     public function insert(array $userInfo): Model
     {
         return User::create($userInfo);
     }
 
-    public function signUp(array $data)
+    public function signUp(array $data): array | string | Model
     {
         $errors = $this->checkIfUserCredentialsExist($data);
         if ($errors != null) {
@@ -48,7 +43,7 @@ class UserRepository
         return $errors;
     }
 
-    private function findUser(string $row, string $userData)
+    public function findUser(string $row, string $userData): User | null
     {
         return User::where($row, $userData)->first();
     }

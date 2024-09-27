@@ -19,7 +19,7 @@ class Session
         $_SESSION['LAST_ACTIVE'] = date("H:i:s");
     }
 
-    public function set(string $key, string | array $value): void
+    public function set(string $key, string | array | int $value): void
     {
         $_SESSION[$key] = $value;
     }
@@ -32,7 +32,7 @@ class Session
         return $_SESSION[$key] ?? [];
     }
 
-    public function getErrors($key): array
+    public function getErrors(string $key): array
     {
         if ($this->has($key)) {
             $errors = $_SESSION[$key];

@@ -9,12 +9,12 @@ readonly class Request
     public readonly object $parameters;
     public array $errors;
 
-    public function method()
+    public function method(): mixed
     {
         return $_SERVER['REQUEST_METHOD'];
     }
 
-    public function uri()
+    public function uri(): mixed
     {
         return $_SERVER['REQUEST_URI'];
     }
