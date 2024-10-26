@@ -8,7 +8,7 @@ use Src\Validation\RouteValidation;
 
 class Route
 {
-    public array $middleware = [];
+    public array $middleware = ['session'];
 
     public string $name;
     public array $parameters;

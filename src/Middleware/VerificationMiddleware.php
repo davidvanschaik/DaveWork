@@ -12,6 +12,9 @@ use Src\Interfaces\Middleware;
 class VerificationMiddleware implements Middleware
 {
     private UserRepository $userRepository;
+    private array $postData;
+    private mixed $user;
+
     public function __construct()
     {
         $this->userRepository = new UserRepository();
@@ -19,34 +22,37 @@ class VerificationMiddleware implements Middleware
 
     public function handle(Request $request, \Closure $next): mixed
     {
-        $post = $request->bodyParams();
-        $user = $this->userRepository->findUser('email', $post['email']);
-
-        if ($post['submit'] !== 'Sign Up') {
-            return $this->checkIfUserExist($post, $user) == false ?? false;
-        }
-        return $next($request);
+        $this->postData = $request->bodyParams();
+        $this->user = $this->userRepository->findUser('email', $this->postData['email']);
+        return $this->checkIfRequestIsLogin() ?? $next($request);
     }
 
-    private function checkIfUserExist(array $post , object | null $user): bool
+    private function checkIfRequestIsLogin(): bool
     {
-        if ($user === null) {
+        if ($this->postData['submit'] !== 'Sign Up') {
+            return $this->checkIfUserExist();
+        }
+    }
+
+    private function checkIfUserExist(): bool
+    {
+        if ($this->user === null) {
             redirect('back');
             return false;
         }
-        $this->verifyUserInput($post, $user);
+        $this->verifyUserInput();
     }
 
-    private function verifyUserInput(array $post, object $user): void
+    private function verifyUserInput(): void
     {
-        if ($user->email == $post['email'] && password_verify($post['password'], $user->password)) {
-            $this->setUserSessionId(App::getInstance()->resolve('session'), $user);
+        if ($this->user->email === $this->postData['email'] && password_verify($this->postData['password'], $this->user->password)) {
+            $this->setUserSessionId(App::getInstance()->resolve('session'));
         }
     }
 
-    private function setUserSessionId(object $session, object $user): void
+    private function setUserSessionId(object $session): void
     {
-        $session->set('user_id', $user->id);
+        $session->set('user_id', $this->user->id);
         redirect('home');
     }
 }

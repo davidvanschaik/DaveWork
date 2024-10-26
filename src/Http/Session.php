@@ -24,10 +24,10 @@ class Session
         $_SESSION[$key] = $value;
     }
 
-    public function get(string $key): string | array
+    public function get(string $key): mixed
     {
         if ($key == 'errors') {
-            $this->getErrors($key);
+           return $this->getErrors($key);
         }
         return $_SESSION[$key] ?? [];
     }
@@ -54,7 +54,7 @@ class Session
 
     public function unset(string $key, string $flashKey = ''): void
     {
-        if ($flashKey == '') {
+        if ($flashKey !== '') {
             unset($_SESSION[$this->flashKey][$key]);
         }
         unset($_SESSION[$key]);
