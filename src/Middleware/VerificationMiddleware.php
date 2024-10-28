@@ -6,18 +6,22 @@ namespace Src\Middleware;
 
 use App\Repositories\UserRepository;
 use Src\Core\App;
+use Src\Handlers\ErrorHandler;
 use Src\Http\Request;
 use Src\Interfaces\Middleware;
 
 class VerificationMiddleware implements Middleware
 {
     private UserRepository $userRepository;
+
     private array $postData;
+    private ErrorHandler $errorHandler;
     private mixed $user;
 
     public function __construct()
     {
         $this->userRepository = new UserRepository();
+        $this->errorHandler = App::getInstance()->resolve('error');
     }
 
     public function handle(Request $request, \Closure $next): mixed
@@ -27,14 +31,14 @@ class VerificationMiddleware implements Middleware
         return $this->checkIfRequestIsLogin() ?? $next($request);
     }
 
-    private function checkIfRequestIsLogin(): bool
+    private function checkIfRequestIsLogin()
     {
         if ($this->postData['submit'] !== 'Sign Up') {
             return $this->checkIfUserExist();
         }
     }
 
-    private function checkIfUserExist(): bool
+    private function checkIfUserExist()
     {
         if ($this->user === null) {
             redirect('back');

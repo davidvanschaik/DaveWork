@@ -33,10 +33,6 @@ class AppServiceProvider extends ServiceProvider
             return new ErrorHandler();
         });
 
-        $this->app->singleton('validation.exception', function () {
-            return new ValidationException();
-        });
-
         $this->app->prototype('PHP.errors', function () {
             return new SyntaxExceptions();
         });

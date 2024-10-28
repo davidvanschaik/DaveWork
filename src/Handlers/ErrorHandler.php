@@ -4,17 +4,25 @@ declare(strict_types=1);
 
 namespace Src\Handlers;
 
+use Src\Core\App;
+
 class ErrorHandler
 {
-    protected array $errors;
+    public array $errors;
 
-    public function setErrors(string $key, string $message): void
+    public function set(string $key, mixed $message): void
     {
         $this->errors[$key] = $message;
     }
 
-    public function getErrors(string $key): string
+    public function store(array $error): void
     {
-        return $this->errors[$key];
+        $session = App::getInstance()->resolve('session');
+        $session->set('errors', $error);
+    }
+
+    public function checkIfErrorsSet(): bool
+    {
+        return isset($this->errors);
     }
 }

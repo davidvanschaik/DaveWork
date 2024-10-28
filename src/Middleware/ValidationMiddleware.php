@@ -5,37 +5,34 @@ declare(strict_types=1);
 namespace Src\Middleware;
 
 use Src\Core\App;
-use Src\Exceptions\ValidationException;
+use Src\Handlers\ErrorHandler;
 use Src\Http\Request;
 use Src\Interfaces\Middleware;
-use Src\Validation\ProfileValidation;
+use Src\Validation\SignupValidation;
 
 class ValidationMiddleware implements Middleware
 {
     private static Request $request;
-    private ProfileValidation $profileValidation;
+    private SignupValidation $signupValidation;
     private array $validationParams;
-    private ValidationException $exception;
+    private ErrorHandler $errorHandler;
     private static array $postData;
 
     public function __construct()
     {
         self::$request = App::getInstance()->resolve('request');
-        $this->profileValidation = new ProfileValidation(self::$postData = self::$request->bodyParams());
-        $this->exception = App::getInstance()->resolve('validation.exception');
+        $this->signupValidation = new SignupValidation(self::$postData = self::$request->bodyParams());
+        $this->errorHandler = App::getInstance()->resolve('error');
+        $this->setValidationParams();
     }
 
     public function handle(Request $request, \Closure $next): mixed
     {
-        if (! self::$request->method() == 'POST') {
-            exit();
-        }
-
-        $this->setValidationParams();
-
-        if (! $this->validate()) {
-            redirect('back');
-            return false;
+        if (self::$postData['submit'] !== 'Log In') {
+            if (! $this->validate()) {
+                redirect('back');
+                return false;
+            }
         }
         return $next($request);
     }
@@ -43,57 +40,38 @@ class ValidationMiddleware implements Middleware
     private function setValidationParams(): void
     {
         match (self::$request->uri()) {
-            '/login'           => $this->validationParams = ['email', 'password'],
+            '/login'           => $this->validationParams = ['email', 'password', 'username', 'phone'],
             '/update-profile'  => $this->validationParams = ['email', 'phone'],
             '/reset-password'  => $this->validationParams = ['password'],
             '/delete-account'  => $this->validationParams = ['email', 'username'],
             '/forgot-password' => $this->validationParams = ['email'],
             default            => null,
         };
-        $this->checkIfRequestIsLogIn();
-    }
-
-    private function checkIfRequestIsLogIn(): void
-    {
-        if (self::$postData['submit'] !== 'Log In') {
-            array_push($this->validationParams, 'username', 'phone');
-            return;
-        }
-        $this->unsetSignUpData();
-    }
-
-    /**
-     * @return void
-     * Because I handle sign-up and log in from the same uri
-     * I need to the unset the sign-up values if the request is log in
-     */
-    private function unsetSignUpData(): void
-    {
-        $array = ['username', 'confirm', 'phone'];
-        foreach ($array as $info) {
-            self::$request->unsetPost($info);
-        }
     }
 
     private function validate(): bool
     {
-        $this->callFunction();
+        $this->callSignupValidationFunction();
         return $this->handleErrors();
     }
 
-    public function callFunction(): void
+    /**
+     * In the set function set I give the key value (email, password etc...) and a function that
+     * returns an error if the input data is not valid.
+     */
+    private function callSignupValidationFunction(): void
     {
         foreach ($this->validationParams as $key) {
-            $this->exception->set($key, $this->profileValidation->{$key . "Validation"}());
+            $this->errorHandler->set($key, $this->signupValidation->{$key . "Validation"}());
         }
     }
 
     private function handleErrors(): bool
     {
-        $errors = $this->checkIfErrorIsSet($this->exception->errors);
+        $errors = $this->checkIfErrorIsSet();
 
         if (! empty($errors)) {
-            $this->exception->store($errors);
+            $this->errorHandler->store($errors);
             return false;
         }
         return true;
@@ -102,7 +80,7 @@ class ValidationMiddleware implements Middleware
     private function checkIfErrorIsSet(): array
     {
         $errors = [];
-        foreach ($this->exception->errors as $error) {
+        foreach ($this->errorHandler->errors as $error) {
             if (is_string($error)) {
                 $errors[] = $error;
             }
