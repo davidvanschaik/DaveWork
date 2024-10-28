@@ -33,31 +33,4 @@ class VerificationMiddleware implements Middleware
         }
         return $next($request);
     }
-
-    private function verify(): bool
-    {
-        return $this->loginValidation->verifyUser();
-    }
-
-    private function checkIfUserExist()
-    {
-        if ($this->user === null) {
-            redirect('back');
-            return false;
-        }
-        $this->verifyUserInput();
-    }
-
-    private function verifyUserInput(): void
-    {
-        if ($this->user->email === $this->postData['email'] && password_verify($this->postData['password'], $this->user->password)) {
-            $this->setUserSessionId(App::getInstance()->resolve('session'));
-        }
-    }
-
-    private function setUserSessionId(object $session): void
-    {
-        $session->set('user_id', $this->user->id);
-        redirect('home');
-    }
 }
