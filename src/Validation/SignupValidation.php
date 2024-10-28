@@ -4,23 +4,36 @@ declare(strict_types=1);
 
 namespace Src\Validation;
 
+use Src\Core\App;
+use Src\Handlers\ErrorHandler;
+
 class SignupValidation
 {
-    private static array $postData;
+    private array $postData;
+    private ErrorHandler $errorHandler;
 
     public function __construct(array $data)
     {
-        self::$postData = $data;
+        $this->postData = $data;
+        $this->errorHandler = App::getInstance()->resolve('error');
+    }
+    
+    public function validateCredentials($validationParams): bool
+    {
+        foreach ($validationParams as $key) {
+            $this->errorHandler->set($key, $this->{$key . "Validation"}());
+        }
+        return $this->errorHandler->handleErrors();
     }
 
-    private static function set(string $data): bool
+    private function set(string $data): bool
     {
-        return ! empty(self::$postData[$data]);
+        return ! empty($this->postData[$data]);
     }
 
-    public static function emailValidation(): string | bool
+    public function emailValidation(): string | bool
     {
-        $sanitizedEmail = filter_var(self::$postData['email'], FILTER_SANITIZE_EMAIL);
+        $sanitizedEmail = filter_var($this->postData['email'], FILTER_SANITIZE_EMAIL);
 
         if (! self::set('email')) {
             return 'Email is required';
@@ -32,24 +45,24 @@ class SignupValidation
         return true;
     }
 
-    public static function passwordValidation(): string | bool
+    public function passwordValidation(): string | bool
     {
         if (! self::set('password')) {
             return 'Password is required';
         }
 
-        if (! self::set(self::$postData['confirm'])) {
+        if (! self::set($this->postData['confirm'])) {
             if (! self::match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/', 'password')) {
                 return 'Password must contain at least one letter, one number and one special character';
             }
-            if (self::$postData['password'] != self::$postData['confirm']) {
+            if ($this->postData['password'] != $this->postData['confirm']) {
                 return 'Passwords do not match';
             }
         }
         return true;
     }
 
-    public static function usernameValidation(): string | bool
+    public function usernameValidation(): string | bool
     {
         if (! self::set('username')) {
             return 'Username is required';
@@ -61,7 +74,7 @@ class SignupValidation
         return true;
     }
 
-    public static function phoneValidation(): bool | string
+    public function phoneValidation(): bool | string
     {
         if (! self::set('phone')) {
             return 'Phone is required';
@@ -73,9 +86,9 @@ class SignupValidation
         return true;
     }
 
-    private static function match(string $pattern, string $data): bool
+    private function match(string $pattern, string $data): bool
     {
-        if (! preg_match($pattern, self::$postData[$data])) {
+        if (! preg_match($pattern, $this->postData[$data])) {
             return false;
         }
         return true;

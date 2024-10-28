@@ -21,8 +21,25 @@ class ErrorHandler
         $session->set('errors', $error);
     }
 
-    public function checkIfErrorsSet(): bool
+    public function handleErrors(): bool
     {
-        return isset($this->errors);
+        $errors = $this->checkIfErrorIsSet();
+
+        if (! empty($errors)) {
+            $this->store($errors);
+            return false;
+        }
+        return true;
+    }
+
+    public function checkIfErrorIsSet(): array
+    {
+        $errors = [];
+        foreach ($this->errors as $error) {
+            if (is_string($error)) {
+                $errors[] = $error;
+            }
+        }
+        return $errors;
     }
 }

@@ -9,33 +9,34 @@ use Src\Core\App;
 use Src\Handlers\ErrorHandler;
 use Src\Http\Request;
 use Src\Interfaces\Middleware;
+use Src\Validation\LoginValidation;
 
 class VerificationMiddleware implements Middleware
 {
-    private UserRepository $userRepository;
-
     private array $postData;
-    private ErrorHandler $errorHandler;
-    private mixed $user;
+    private LoginValidation $loginValidation;
+    private Request $request;
 
     public function __construct()
     {
-        $this->userRepository = new UserRepository();
-        $this->errorHandler = App::getInstance()->resolve('error');
+        $this->request = App::getInstance()->resolve('request');
+        $this->loginValidation = new LoginValidation($this->postData = $this->request->bodyParams());
     }
 
     public function handle(Request $request, \Closure $next): mixed
     {
-        $this->postData = $request->bodyParams();
-        $this->user = $this->userRepository->findUser('email', $this->postData['email']);
-        return $this->checkIfRequestIsLogin() ?? $next($request);
+        if ($this->postData['submit'] !== 'Sign Up') {
+            if (! $this->loginValidation->verify($this->postData)) {
+                redirect('back');
+                return false;
+            }
+        }
+        return $next($request);
     }
 
-    private function checkIfRequestIsLogin()
+    private function verify(): bool
     {
-        if ($this->postData['submit'] !== 'Sign Up') {
-            return $this->checkIfUserExist();
-        }
+        return $this->loginValidation->verifyUser();
     }
 
     private function checkIfUserExist()
