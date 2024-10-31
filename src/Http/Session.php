@@ -48,8 +48,8 @@ class Session
 
     public function destroy(): void
     {
-        session_unset();
         session_destroy();
+        session_start();
     }
 
     public function unset(string $key, string $flashKey = ''): void
@@ -77,11 +77,20 @@ class Session
         return $flash;
     }
 
-    private function setTimeOutTime(): string
+    public function setTimeOutTime(): int
     {
         $lastActive = explode(':', $_SESSION['LAST_ACTIVE']);
-        (int)$lastActive[0] += 1;
-        return implode(':', $lastActive);
+        (int)$lastActive[2] += 3;
+
+        if ((int)$lastActive[2] > 59) {
+            $lastActive[2] -= 60;
+
+            if ($lastActive[2] < 10) {
+                $lastActive[2] = "0" . $lastActive[2];
+            }
+            $lastActive[1] += 1;
+        }
+        return (int)implode($lastActive);
     }
 
     public function timeOut(): void

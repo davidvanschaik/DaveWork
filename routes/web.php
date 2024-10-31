@@ -16,8 +16,6 @@ Route::post('/login', [AuthController::class, 'handle'])
     ->middleware('verification')
     ->name('postLogin');
 
-// Tests
-
 Route::get('/test', [PostController::class, 'index'])->name('test');
 
 Route::get('/home', [HomeController::class, 'index'])

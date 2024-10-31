@@ -21,10 +21,8 @@ $connection = new ConnectionHandler([
 ]);
 
 match ($argument) {
-//    '' => error(),
     'migrate' => database('run', 'Running', $connection),
     'rollback' => database('down', 'Rolling back', $connection),
-//    'seed' => seed(),
 };
 
 function database(string $method, string $message, ConnectionHandler $connection): void

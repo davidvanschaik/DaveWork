@@ -12,58 +12,43 @@ use Src\Interfaces\Middleware;
 
 class AuthMiddleware implements Middleware
 {
-    protected string $csrfToken;
-    private Request $request;
     private Session $session;
+    private Request $request;
 
     public function __construct()
     {
-        $this->request = App::getInstance()->resolve('request');
         $this->session = App::getInstance()->resolve('session');
+        $this->request = App::getInstance()->resolve('request');
     }
 
     public function handle(Request $request, \Closure $next): mixed
     {
-        if (! $this->checkIfUserIsLoggedIn()) {
-            redirect('back');
-        }
-
-        if (! $this->session->has('csrf_token')) {
-            $this->setCSRFtoken();
-        } else {
-            if (! $this->verifyCSRFToken()) {
-                return false;
-            }
-        }
+        $this->checkIfUserIsLoggedIn();
         return $next($request);
     }
 
-    public function checkIfUserIsLoggedIn(): bool
+    private function checkIfUserIsLoggedIn(): void
     {
-        if ($this->session->has('user_id')) {
-            return false;
-        }
-        return true;
-    }
-
-    public function setCSRFToken(): void
-    {
-        if ($this->request->method() == 'POST' && $this->session->has('user_id')) {
-            $this->csrfToken = $_POST['csrf_token'];
+        if (! $this->session->get('user_id')) {
+            $this->redirectLogin();
+        } else {
+            $this->redirectHome();
         }
     }
 
-    public function verifyCSRFToken(): bool
+    private function redirectLogin(): void
     {
-        if ($this->session->verifyCSRF($this->csrfToken)) {
-            return false;
+        if ($this->request->uri() !== '/login') {
+            redirect('login');
+            exit;
         }
-        return true;
     }
 
-    public function handleError($message): void
+    private function redirectHome(): void
     {
-        $exception = App::getInstance()->resolve('exception');
-        $exception->store($message);
+        if ($this->request->uri() === '/login') {
+            redirect('home');
+            exit;
+        }
     }
 }

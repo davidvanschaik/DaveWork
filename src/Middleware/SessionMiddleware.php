@@ -11,32 +11,41 @@ use Src\Interfaces\Middleware;
 class SessionMiddleware implements Middleware
 {
     private Session $session;
-    private Request $request;
 
     public function __construct()
     {
         $this->session = App::getInstance()->resolve('session');
-        $this->request = App::getInstance()->resolve('request');
     }
 
     public function handle(Request $request, \Closure $next): mixed
     {
-        $this->checkIfUserIsLoggedIn($this->session->get('user_id'));
-        $this->session->setActive();
-
+        if ($this->session->has('user_id')) {
+            $this->setActive($this->session->get('LAST_ACTIVE'));
+        }
         return $next($request);
     }
 
-    private function checkIfUserIsLoggedIn($userId): void
+    private function setActive(mixed $lastActive): void
     {
-        if (! $userId && $this->request->uri() !== '/login') {
-            redirect('login');
-            exit;
+        if ($lastActive && ! $this->checkTimeOut($lastActive)) {
+            return;
         }
+        $this->session->setActive();
+    }
 
-        if ($userId && $this->request->uri() === '/login') {
-            redirect('home');
-            exit;
+    private function checkTimeOut(mixed $lastActive): bool
+    {
+        if ((int)implode(explode(':', date('H:i:s'))) >= $this->session->setTimeOutTime()) {
+            $this->destroy();
+            return false;
         }
+        return true;
+    }
+
+    private function destroy(): void
+    {
+        $this->session->destroy();
+        redirect('login');
+        $this->session->set('errors', ['Session expired, please login again.']);
     }
 }
