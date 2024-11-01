@@ -21,7 +21,6 @@ class AuthController
 
     public function index(Request $request): void
     {
-//        dd($request);
         echo view('login', ['errors' => errors()]);
     }
 

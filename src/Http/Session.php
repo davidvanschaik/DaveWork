@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Src\Http;
 
+use DateTime;
+
 class Session
 {
     protected string $flashKey;
@@ -16,7 +18,7 @@ class Session
 
     public function setActive(): void
     {
-        $_SESSION['LAST_ACTIVE'] = date("H:i:s");
+        $_SESSION['LAST_ACTIVE'] = (new DateTime())->format('Y-m-d H:i:s');
     }
 
     public function set(string $key, string | array | int $value): void
@@ -75,30 +77,6 @@ class Session
         $flash = $_SESSION[$this->flashKey][$key];
         $this->unset($key);
         return $flash;
-    }
-
-    public function setTimeOutTime(): int
-    {
-        $lastActive = explode(':', $_SESSION['LAST_ACTIVE']);
-        (int)$lastActive[2] += 3;
-
-        if ((int)$lastActive[2] > 59) {
-            $lastActive[2] -= 60;
-
-            if ($lastActive[2] < 10) {
-                $lastActive[2] = "0" . $lastActive[2];
-            }
-            $lastActive[1] += 1;
-        }
-        return (int)implode($lastActive);
-    }
-
-    public function timeOut(): void
-    {
-        if ($_SESSION['LAST_ACTIVE'] == $this->setTimeOutTime()) {
-            session_unset();
-            session_destroy();
-        }
     }
 
     public function generateCSRF(): string

@@ -23,11 +23,11 @@
             </div>
 
             <div class="mb-4">
-                <input type="password" name="password" value="HelloWorld2024!!!" placeholder="Password" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="password" name="password" value="HelloWorld2024!" placeholder="Password" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <div id="confirm-password-row" class="mb-4 hidden">
-                <input type="password" name="confirm" value="HelloWorld2024!!!" placeholder="Confirm Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="password" name="confirm" value="HelloWorld2024!" placeholder="Confirm Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <div id="phone-row" class="mb-4 hidden">

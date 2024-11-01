@@ -6,6 +6,7 @@ namespace Src\Middleware;
 
 use Src\Core\App;
 use Src\Http\{Request, Session};
+use Src\Handlers\SessionTimeOutHandler;
 use Src\Interfaces\Middleware;
 
 class SessionMiddleware implements Middleware
@@ -28,6 +29,7 @@ class SessionMiddleware implements Middleware
     private function setActive(mixed $lastActive): void
     {
         if ($lastActive && ! $this->checkTimeOut($lastActive)) {
+            $this->destroy();
             return;
         }
         $this->session->setActive();
@@ -35,11 +37,8 @@ class SessionMiddleware implements Middleware
 
     private function checkTimeOut(mixed $lastActive): bool
     {
-        if ((int)implode(explode(':', date('H:i:s'))) >= $this->session->setTimeOutTime()) {
-            $this->destroy();
-            return false;
-        }
-        return true;
+//        Time Out Duration in seconds.
+        return (new SessionTimeOutHandler($this->session, 7200))->checkTimeOut();
     }
 
     private function destroy(): void
