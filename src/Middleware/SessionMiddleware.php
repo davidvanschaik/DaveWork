@@ -28,14 +28,14 @@ class SessionMiddleware implements Middleware
 
     private function setActive(mixed $lastActive): void
     {
-        if ($lastActive && ! $this->checkTimeOut($lastActive)) {
+        if ($lastActive && ! $this->checkTimeOut()) {
             $this->destroy();
             return;
         }
         $this->session->setActive();
     }
 
-    private function checkTimeOut(mixed $lastActive): bool
+    private function checkTimeOut(): bool
     {
 //        Time Out Duration in seconds.
         return (new SessionTimeOutHandler($this->session, 7200))->checkTimeOut();
