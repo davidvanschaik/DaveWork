@@ -10,9 +10,9 @@ use Src\Interfaces\Migration;
 
 class CommentMigration implements Migration
 {
-    public static function run(Builder $schema): void
+    public function run(Builder $schema): void
     {
-        $schema->create('comments', function (Blueprint $table) {
+        $schema->create('comment', function (Blueprint $table) {
             $table->increments('id');
             $table->text('content');
             $table->foreignId('user_id');
@@ -23,6 +23,6 @@ class CommentMigration implements Migration
 
     public static function down(Builder $schema): void
     {
-        $schema->dropIfExists('comments');
+        $schema->dropIfExists('comment');
     }
 }

@@ -10,9 +10,9 @@ use Src\Interfaces\Migration;
 
 class PostMigration implements Migration
 {
-    public static function run(Builder $schema): void
+    public function run(Builder $schema): void
     {
-        $schema->create('posts', function (Blueprint $table) {
+        $schema->create('post', function (Blueprint $table) {
             $table->increments('id');
             $table->text('body');
             $table->foreignId('user_id');
@@ -24,6 +24,6 @@ class PostMigration implements Migration
 
     public static function down(Builder $schema): void
     {
-        $schema->dropIfExists('posts');
+        $schema->dropIfExists('post');
     }
 }

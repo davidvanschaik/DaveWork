@@ -10,9 +10,9 @@ use Src\Interfaces\Migration;
 
 class LikeMigration implements Migration
 {
-    public static function run(Builder $schema): void
+    public function run(Builder $schema): void
     {
-        $schema->create('likes', function (Blueprint $table) {
+        $schema->create('like', function (Blueprint $table) {
             $table->increments('id');
             $table->foreignId('user_id');
             $table->foreignId('post_id');
@@ -23,6 +23,6 @@ class LikeMigration implements Migration
 
     public static function down(Builder $schema): void
     {
-        $schema->dropIfExists('likes');
+        $schema->dropIfExists('like');
     }
 }

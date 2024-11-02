@@ -10,7 +10,7 @@ use Src\Interfaces\Migration;
 
 class FollowingMigration implements Migration
 {
-    public static function run(Builder $schema): void
+    public function run(Builder $schema): void
     {
         $schema->create('following', function (Blueprint $table) {
             $table->foreignId('user_id');

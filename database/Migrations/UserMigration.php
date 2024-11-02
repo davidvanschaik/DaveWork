@@ -10,9 +10,9 @@ use Src\Interfaces\Migration;
 
 class UserMigration implements Migration
 {
-    public static function run(Builder $schema): void
+    public function run(Builder $schema): void
     {
-        $schema->create('users', function (Blueprint $table) {
+        $schema->create('user', function (Blueprint $table) {
             $table->increments('id');
             $table->string('username');
             $table->string('email');
@@ -24,6 +24,6 @@ class UserMigration implements Migration
 
     public static function down(Builder $schema): void
     {
-        $schema->dropIfExists('users');
+        $schema->dropIfExists('user');
     }
 }

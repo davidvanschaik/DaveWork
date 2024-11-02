@@ -10,9 +10,9 @@ use Src\Interfaces\Migration;
 
 class ProfileMigration implements Migration
 {
-    public static function run(Builder $schema): void
+    public function run(Builder $schema): void
     {
-        $schema->create('profiles', function (Blueprint $table) {
+        $schema->create('profile', function (Blueprint $table) {
             $table->increments('id');
             $table->foreignId('user_id');
             $table->boolean('verified');
@@ -28,6 +28,6 @@ class ProfileMigration implements Migration
 
     public static function down(Builder $schema): void
     {
-        $schema->dropIfExists('profiles');
+        $schema->dropIfExists('profile');
     }
 }
