@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Database\Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
-use Src\Handlers\ConnectionHandler;
+use Illuminate\Database\Schema\Builder;
 use Src\Interfaces\Migration;
 
 class CommentMigration implements Migration
 {
-    public static function run(ConnectionHandler $connection): void
+    public static function run(Builder $schema): void
     {
-        $connection->getSchema()->create('comments', function (Blueprint $table) {
+        $schema->create('comments', function (Blueprint $table) {
             $table->increments('id');
             $table->text('content');
             $table->foreignId('user_id');
@@ -21,8 +21,8 @@ class CommentMigration implements Migration
         });
     }
 
-    public static function down(ConnectionHandler $connection): void
+    public static function down(Builder $schema): void
     {
-        $connection->getSchema()->dropIfExists('comments');
+        $schema->dropIfExists('comments');
     }
 }

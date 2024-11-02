@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Src\Providers;
 
+use Illuminate\Database\Schema\Builder;
 use Src\Handlers\ConnectionHandler;
 
 class DatabaseServiceProvider
@@ -15,8 +16,8 @@ class DatabaseServiceProvider
         self::$connectionHandler = new ConnectionHandler($options);
     }
 
-    public static function get(): ConnectionHandler
+    public static function get(): Builder
     {
-        return self::$connectionHandler;
+        return self::$connectionHandler->getSchema();
     }
 }
