@@ -23,7 +23,9 @@ class Kernel
 
     public function setCurrentRoute(Route $route): void
     {
-        $this->currentRoute = $route;
+        if (empty($this->currentRoute)) {
+            $this->currentRoute = $route;
+        }
     }
 
     /**
@@ -31,12 +33,18 @@ class Kernel
      */
     public function handle(): void
     {
-        $route = $this->routeRegistration->findRoute($this->request->method(), $this->request->uri());
-
-        if (empty($this->currentRoute)) {
-            $this->setCurrentRoute($route);
-        }
+        $route = $this->findRoute();
+        $this->setCurrentRoute($route);
         $this->middleware($route);
+    }
+
+    private function findRoute(): ?Route
+    {
+        $route = $this->routeRegistration->findRoute($this->request->method(), $this->request->uri());
+        if (! $route) {
+            $route = $this->routeRegistration->findRoute('GET', '/login');
+        }
+        return $route;
     }
 
     /**
