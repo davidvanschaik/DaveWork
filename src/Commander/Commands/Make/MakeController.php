@@ -2,7 +2,7 @@
 
 namespace Src\Commander\Commands\Make;
 
-class ViewCommand
+class MakeController
 {
 
 }

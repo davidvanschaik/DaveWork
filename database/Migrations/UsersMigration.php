@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
 use Src\Interfaces\Migration;
 
-class UserMigration implements Migration
+class UsersMigration implements Migration
 {
     public function run(Builder $schema): void
     {

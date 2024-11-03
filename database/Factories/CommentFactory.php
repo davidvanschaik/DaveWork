@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Factory;
+namespace Database\Factories;
 
 class CommentFactory
 {
