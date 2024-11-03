@@ -2,7 +2,7 @@
 
 namespace Src\Commander\Commands;
 
-use Src\Helpers\CliColors as CLI;
+use Src\Helpers\CLIHelper as CLI;
 
 class InterfaceHandler
 {
@@ -14,6 +14,7 @@ class InterfaceHandler
         }
         return true;
     }
+
     public static function displayError(): void
     {
         echo CLI::RED . 'Invalid command given.' . CLI::RESET . PHP_EOL;

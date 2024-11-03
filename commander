@@ -4,48 +4,8 @@
 declare(strict_types=1);
 
 require 'vendor/autoload.php';
+require 'config/database.php';
 
-use Src\Handlers\ConnectionHandler;
+use Src\Commander\Kernel;
 
-$argument = $argv[1] ?? '';
-
-$connection = new ConnectionHandler([
-    'driver'    => 'mysql',
-    'host'      => 'localhost:3306',
-    'database'  => 'Binsta',
-    'username'  => 'root',
-    'password'  => '',
-    'charset'   => 'utf8',
-    'collation' => 'utf8_unicode_ci',
-    'prefix'    => '',
-]);
-
-match ($argument) {
-    'migrate' => database('run', 'Running', $connection),
-    'rollback' => database('down', 'Rolling back', $connection),
-};
-
-function database(string $method, string $message, ConnectionHandler $connection): void
-{
-    foreach (getMigrations() as $file) {
-        $migrationClass = "Database\\Migrations\\$file";
-        if (class_exists($migrationClass)) {
-            $migrationClass::$method($connection);
-            echo "$message $file" . PHP_EOL;
-        } else {
-            echo "Class $file does not exist";
-        }
-    }
-}
-
-function getMigrations(): array
-{
-    $migrationDir = __DIR__ . '/database/Migrations/';
-    $migrations = glob($migrationDir . '/*.php');
-
-    $migrationFiles = [];
-    foreach ($migrations as $migration) {
-        $migrationFiles[] = pathinfo($migration, PATHINFO_FILENAME);
-    }
-    return $migrationFiles;
-}
+(new Kernel($argv))->run();
