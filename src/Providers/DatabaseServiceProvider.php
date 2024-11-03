@@ -20,4 +20,9 @@ class DatabaseServiceProvider
     {
         return self::$connectionHandler->getSchema();
     }
+
+    public static function tableExists(string $table): bool
+    {
+        return self::get()->hasTable($table);
+    }
 }
