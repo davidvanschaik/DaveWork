@@ -22,7 +22,7 @@ class PostMigration implements Migration
 
     }
 
-    public static function down(Builder $schema): void
+    public function down(Builder $schema): void
     {
         $schema->dropIfExists('post');
     }

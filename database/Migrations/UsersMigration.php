@@ -12,7 +12,7 @@ class UsersMigration implements Migration
 {
     public function run(Builder $schema): void
     {
-        $schema->create('user', function (Blueprint $table) {
+        $schema->create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('username');
             $table->string('email');
@@ -22,8 +22,8 @@ class UsersMigration implements Migration
         });
     }
 
-    public static function down(Builder $schema): void
+    public function down(Builder $schema): void
     {
-        $schema->dropIfExists('user');
+        $schema->dropIfExists('users');
     }
 }
