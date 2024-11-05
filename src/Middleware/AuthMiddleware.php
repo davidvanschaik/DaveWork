@@ -6,7 +6,6 @@ namespace Src\Middleware;
 
 use Src\Core\App;
 use Src\Http\Request;
-use Src\Http\Response;
 use Src\Http\Session;
 use Src\Interfaces\Middleware;
 
