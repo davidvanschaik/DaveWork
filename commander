@@ -1,11 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-declare(strict_types=1);
-
 require 'vendor/autoload.php';
-require 'config/database.php';
 
-use Src\Commander\Kernel;
+use Src\Console\Kernel;
 
-(new Kernel($argv))->run();
+(new Kernel())->handle();

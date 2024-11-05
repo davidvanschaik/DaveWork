@@ -1,12 +1,20 @@
 <?php
 
-namespace Src\Commander\Commands;
+namespace Src\Console\Commands\Server;
 
+use Src\Console\Commands\Command;
 use Src\Helpers\CLIHelper as CLI;
 
-class HostCommand
+class Host implements Command
 {
-    public static function callHost(): void
+    private array $arg;
+
+    public function __construct(array $arg)
+    {
+        $this->arg = $arg;
+    }
+
+    public function setCommand(): void
     {
         echo CLI::GREEN . 'Server running on: [http://127.0.0.1:8000]' . PHP_EOL;
         echo CLI::YELLOW . 'Press Ctrl + C to abort' . CLI::RESET . PHP_EOL;
