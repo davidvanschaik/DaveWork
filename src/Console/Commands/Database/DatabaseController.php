@@ -5,8 +5,6 @@ namespace Src\Console\Commands\Database;
 use Src\Helpers\CLIHelper as CLI;
 use Src\Providers\DatabaseServiceProvider as DB;
 
-require 'config/database.php';
-
 class DatabaseController
 {
     protected function getMigrations(): array

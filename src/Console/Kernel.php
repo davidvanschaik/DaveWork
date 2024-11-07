@@ -2,6 +2,8 @@
 
 namespace Src\Console;
 
+require 'config/database.php';
+
 class Kernel
 {
     public function handle(): void
