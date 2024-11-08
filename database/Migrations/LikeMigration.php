@@ -12,7 +12,7 @@ class LikeMigration implements Migration
 {
     public function run(Builder $schema): void
     {
-        $schema->create('like', function (Blueprint $table) {
+        $schema->create('likes', function (Blueprint $table) {
             $table->increments('id');
             $table->foreignId('user_id');
             $table->foreignId('post_id');
@@ -23,6 +23,6 @@ class LikeMigration implements Migration
 
     public function down(Builder $schema): void
     {
-        $schema->dropIfExists('like');
+        $schema->dropIfExists('likes');
     }
 }

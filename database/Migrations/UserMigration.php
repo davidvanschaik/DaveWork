@@ -8,19 +8,22 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
 use Src\Interfaces\Migration;
 
-class FollowersMigration implements Migration
+class UserMigration implements Migration
 {
     public function run(Builder $schema): void
     {
-        $schema->create('followers', function (Blueprint $table) {
-            $table->foreignId('user_id');
-            $table->foreignId('follower_id');
+        $schema->create('users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('username');
+            $table->string('email');
+            $table->string('password');
+            $table->string('phone');
             $table->timestamps();
         });
     }
 
     public function down(Builder $schema): void
     {
-        $schema->dropIfExists('followers');
+        $schema->dropIfExists('users');
     }
 }

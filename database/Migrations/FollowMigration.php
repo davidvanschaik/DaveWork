@@ -8,11 +8,11 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
 use Src\Interfaces\Migration;
 
-class FollowingMigration implements Migration
+class FollowMigration implements Migration
 {
     public function run(Builder $schema): void
     {
-        $schema->create('following', function (Blueprint $table) {
+        $schema->create('follows', function (Blueprint $table) {
             $table->foreignId('user_id');
             $table->foreignId('following_id');
             $table->timestamps();
@@ -22,7 +22,7 @@ class FollowingMigration implements Migration
 
     public function down(Builder $schema): void
     {
-        $schema->dropIfExists('following');
+        $schema->dropIfExists('follows');
     }
 
 }

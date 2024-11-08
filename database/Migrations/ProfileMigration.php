@@ -12,7 +12,7 @@ class ProfileMigration implements Migration
 {
     public function run(Builder $schema): void
     {
-        $schema->create('profile', function (Blueprint $table) {
+        $schema->create('profiles', function (Blueprint $table) {
             $table->increments('id');
             $table->foreignId('user_id');
             $table->boolean('verified');
@@ -28,6 +28,6 @@ class ProfileMigration implements Migration
 
     public function down(Builder $schema): void
     {
-        $schema->dropIfExists('profile');
+        $schema->dropIfExists('profiles');
     }
 }
