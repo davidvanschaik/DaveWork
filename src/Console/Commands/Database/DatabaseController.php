@@ -2,7 +2,7 @@
 
 namespace Src\Console\Commands\Database;
 
-use Src\Helpers\CLIHelper as CLI;
+use Src\Console\Response as CLI;
 use Src\Providers\DatabaseServiceProvider as DB;
 
 class DatabaseController

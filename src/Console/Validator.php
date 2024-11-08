@@ -2,7 +2,7 @@
 
 namespace Src\Console;
 
-use Src\Helpers\CLIHelper as CLI;
+use Src\Console\Response as CLI;
 
 class Validator
 {

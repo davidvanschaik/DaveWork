@@ -2,8 +2,8 @@
 
 namespace Src\Console\Commands\Make;
 
+use Src\Console\Response as CLI;
 use Src\Console\Validator;
-use Src\Helpers\CLIHelper as CLI;
 
 class MakeFileController
 {

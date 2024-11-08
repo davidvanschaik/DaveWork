@@ -2,8 +2,8 @@
 
 namespace Src\Console\Commands\Server;
 
+use Src\Console\Response as CLI;
 use Src\Console\Commands\Command;
-use Src\Helpers\CLIHelper as CLI;
 
 class Host implements Command
 {
