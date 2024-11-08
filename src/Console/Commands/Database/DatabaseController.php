@@ -20,7 +20,7 @@ class DatabaseController
         $tables = [];
 
         foreach ($migrations as $migration) {
-            $table = str_replace('Migration', '', $migration);
+            $table = strtolower(str_replace('Migration', '', $migration)) . 's';
             if (DB::tableExists($table) == $bool) {
                 $tables[] = $table;
             }
