@@ -13,18 +13,10 @@ class Post extends Model
 {
     use HasFactory;
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $fillable = ['profile_id'];
 
-    public function comments(): HasMany
+    public function profile(): BelongsTo
     {
-        return $this->hasMany(Comment::class);
-    }
-
-    public function likes(): HasMany
-    {
-        return $this->hasMany(Like::class);
+        return $this->belongsTo(Profile::class);
     }
 }

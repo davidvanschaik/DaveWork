@@ -2,6 +2,7 @@
 
 namespace Src\Console\Commands\Database;
 
+use Database\Seeders\DatabaseSeeder as DB;
 use Src\Console\Commands\Command;
 
 class Seed implements Command
@@ -13,8 +14,9 @@ class Seed implements Command
         $this->arg = $arg;
     }
 
-    public function setCommand()
+    public function setCommand(): void
     {
-        echo 'seed controller';
+        DB::run();
+        echo 'Seeding database.' . PHP_EOL;
     }
 }

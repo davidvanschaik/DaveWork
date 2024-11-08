@@ -15,9 +15,11 @@ class PostMigration implements Migration
         $schema->create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->text('body');
-            $table->foreignId('user_id');
-            $table->text('info');
+            $table->foreignId('profile_id');
+//            $table->text('info');
             $table->timestamps();
+
+            $table->foreign('profile_id')->references('id')->on('profiles');
         });
 
     }

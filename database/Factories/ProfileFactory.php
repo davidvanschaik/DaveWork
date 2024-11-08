@@ -2,13 +2,15 @@
 
 namespace Database\Factories;
 
+use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Collection;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
-class UserFactory extends Factory
+class ProfileFactory extends Factory
 {
     public function __construct(
         $count = null,
@@ -26,7 +28,7 @@ class UserFactory extends Factory
     /**
      * The current password being used by the factory.
      */
-    protected static ?string $password;
+    protected $model = Profile::class;
 
     /**
      * Define the model's default state.
@@ -36,10 +38,8 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'username' => $this->faker->userName,
-            'email' => $this->faker->unique()->safeEmail,
-            'password' => $this->faker->password,
-            'phone' => $this->faker->phoneNumber,
+            'user_id' => User::factory(),
+            'bio_info' => $this->faker->text(100),
         ];
     }
 }

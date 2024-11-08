@@ -47,4 +47,10 @@ class UserRepository
     {
         return User::where($row, $userData)->first();
     }
+
+    public function getUserWithRelations(int $userId): User | null
+    {
+        return User::with('profile', 'profile.posts')  // Eager load profile and posts
+        ->find($userId);  // Retrieve the user by their ID
+    }
 }

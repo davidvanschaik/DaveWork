@@ -13,7 +13,7 @@ class UserMigration implements Migration
     public function run(Builder $schema): void
     {
         $schema->create('users', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('username');
             $table->string('email');
             $table->string('password');
