@@ -7,25 +7,40 @@ use Src\Providers\DatabaseServiceProvider as DB;
 
 class DatabaseController
 {
-    protected function getMigrations(): array
+    private bool $bool;
+
+    protected function getMigrations(bool $bool): array
     {
+        $this->bool = $bool;
+
         foreach (glob('database/Migrations/*.php') as $migration) {
             $migrationClass[] = pathinfo($migration, PATHINFO_FILENAME);
         }
-        return $migrationClass ?? [];
+        return $this->sortTables($migrationClass, $bool);
     }
 
-    protected function tableExist(array $migrations, bool $bool) : array
+    protected function tableExist(array $migrations) : array
     {
         $tables = [];
 
         foreach ($migrations as $migration) {
-            $table = strtolower(str_replace('Migration', '', $migration)) . 's';
-            if (DB::tableExists($table) == $bool) {
+            $table = $this->getTable($migration);
+            if (DB::tableExists($table) == $this->bool) {
                 $tables[] = $table;
             }
         }
         return $tables;
+    }
+
+    private function sortTables(array $migrations, bool $bool): array
+    {
+        return !$bool ? $migrations : array_reverse($migrations);
+    }
+
+    private function getTable(string $migration): string
+    {
+        $table = explode('_', $migration);
+        return $table[2] . 's';
     }
 
     protected function validateTables(array $tables, string $command): void
@@ -39,10 +54,17 @@ class DatabaseController
     protected function executeMigrations(array $migrationClass, string $func): void
     {
         foreach ($migrationClass as $migration) {
-            $migrationClass = "Database\\Migrations\\" . $migration;
+            require_once "database/Migrations/{$migration}.php";
+            $migrationClass = $this->getClassName($migration);
             $time = $this->runMigration($migrationClass, $func);
             $this->showOutput($time, $migration);
         }
+    }
+
+    private function getClassName(string $migration): string
+    {
+        $parts = explode('_', substr($migration, 4));
+        return "Database\\Migrations\\" . implode('', array_map('ucfirst', $parts));;
     }
 
     private function runMigration(string $class, string $function): string

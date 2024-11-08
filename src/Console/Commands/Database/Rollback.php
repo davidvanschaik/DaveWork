@@ -14,7 +14,7 @@ class Rollback extends DatabaseController implements Command
 
     public function setCommand(): void
     {
-        $tables = $this->tableExist($migrations = $this->getMigrations(), true);
+        $tables = $this->tableExist($migrations = $this->getMigrations(true));
         $this->validateTables($tables, 'rollback');
 
         echo 'INFO: Rolling back migrations' . PHP_EOL;

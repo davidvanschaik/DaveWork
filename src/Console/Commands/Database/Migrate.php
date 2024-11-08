@@ -14,7 +14,7 @@ class Migrate extends DatabaseController implements Command
 
     public function setCommand(): void
     {
-        $tables = $this->tableExist($migrations = $this->getMigrations(), false);
+        $tables = $this->tableExist($migrations = $this->getMigrations(false));
         $this->validateTables($tables, 'migrate');
 
         echo 'INFO: Running migrations' . PHP_EOL;

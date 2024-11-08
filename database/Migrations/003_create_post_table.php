@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
 use Src\Interfaces\Migration;
 
-class PostMigration implements Migration
+class CreatePostTable implements Migration
 {
     public function run(Builder $schema): void
     {
