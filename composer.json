@@ -10,7 +10,6 @@
     "fakerphp/faker": "^1.23",
     "vlucas/phpdotenv": "*",
     "illuminate/database": "^11.10",
-    "symfony/console": "^7.1",
     "jenssegers/blade": "^2.0",
     "illuminate/view": "11.7.0"
   }
