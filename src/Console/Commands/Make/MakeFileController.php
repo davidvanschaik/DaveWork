@@ -7,51 +7,80 @@ use Src\Console\Validator;
 
 class MakeFileController
 {
+    protected string $name;
+    protected string $type;
     protected string $dir;
 
-    protected function typeExist(string $fileType): void
+    protected function validate(string $type, string $name): void
     {
-        if (! in_array($fileType, ['controller', 'migration', 'middleware'])) {
+        $this->type = $type;
+        $this->name = $name;
+        $this->dir = $this->getDirectory();
+
+        $this->typeExist();
+        $this->fileExist($this->dir, $this->name);
+    }
+
+    protected function typeExist(): void
+    {
+        if (! in_array($this->type, ['controller', 'migration', 'middleware'])) {
             Validator::handleError();
             exit;
         }
     }
-    protected function fileExist(string $fileName, string $dir): void
+
+    protected function fileExist(string $dir, string $name): void
     {
-        if (file_exists($dir . $fileName . '.php')) {
+        if (file_exists($dir . $name . '.php') || $dir == $name) {
             echo CLI::RED . 'File already exists' . CLI::RESET . PHP_EOL;
             exit;
         }
     }
-    protected function getDirectory(string $type): string
+
+    protected function getDirectory(): string
     {
-        return match ($type) {
+        return match ($this->type) {
             'controller' => "app/Controllers/",
             'middleware' => 'app/Middleware/',
             'migration' => 'database/Migrations/',
         };
     }
 
-    protected function getContent(string $dir, string $className): array
+    protected function getContent(): array
     {
-        $namespace = ucfirst(substr_replace(implode('\\', explode('/', $dir)), '', -1));
-        $tableName = strtolower(str_replace('Migration', '', $className));
+        $name = $this->name;
+        $namespace = ucfirst(substr_replace(implode('\\', explode('/', $this->dir)), '', -1));
+        $tableName = strtolower(str_replace('Migration', '', $name)) . 's';
 
-        return compact( 'namespace', 'className', 'tableName');
+        return compact( 'namespace', 'name', 'tableName');
     }
 
-    protected function generateFile(array $fileContent, string $fileType): string
+    protected function generateFile(): string
     {
         ob_start();
-        extract($fileContent, \EXTR_SKIP);
-        include __DIR__ . '/Templates/' . ucfirst($fileType) . '.php';
+        extract($this->getContent(), \EXTR_SKIP);
+        include __DIR__ . '/Templates/' . ucfirst($this->type) . '.php';
         return ob_get_clean();
     }
 
-    protected function createFile(string $file, string $path, string $fileType): void
+    protected function createFile(string $file): void
     {
+        $path = $this->checkIfMigration($this->dir, $this->name);
         file_put_contents($path, $file);
 
-        echo CLI::echo('GREEN', ucfirst($fileType) . " [$path] successfully created");
+        echo CLI::echo('GREEN', ucfirst($this->type) . " [$path] successfully created");
+    }
+
+    private function checkIfMigration(string $path, string $fileName): string
+    {
+        if ($path == 'database/Migrations/') {
+            $migrations = glob('database/Migrations/*.php');
+
+            foreach ($migrations as $migration) {
+                $this->fileExist(substr($migration, 24, -4), $fileName);
+            }
+            $fileName = '00' . count($migrations) + 1 . "_{$fileName}";
+        }
+        return $path . $fileName . '.php';
     }
 }

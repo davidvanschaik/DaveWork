@@ -1,4 +1,4 @@
-<?= "<?php\n" ?>
+<?= "<?php\n" ?> <?php $class = ucfirst(substr($name, 7, -6)); ?>
 
 declare(strict_types=1);
 
@@ -8,11 +8,11 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
 use Src\Interfaces\Migration;
 
-class <?= $className ?> implements Migration
+class Create<?= $class ?>Table implements Migration
 {
     public function run(Builder $schema): void
     {
-        $schema->create('<?= strtolower(str_replace('Migration', '', $className)) ?>', function (Blueprint $table) {
+        $schema->create('<?= strtolower($class) . 's' ?>', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
@@ -20,6 +20,6 @@ class <?= $className ?> implements Migration
 
     public function down(Builder $schema): void
     {
-        $schema->dropIfExists('<?= strtolower(str_replace('Migration', '', $className)) ?>');
+        $schema->dropIfExists('<?= strtolower($class) . 's' ?>');
     }
 }

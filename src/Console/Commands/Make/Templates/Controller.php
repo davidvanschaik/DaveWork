@@ -6,7 +6,7 @@ namespace <?= $namespace ?>;
 
 use Src\Http\Request;
 
-class <?= $className;  ?>
+class <?= $name; ?>
 
 {
     public function index(Request $request)

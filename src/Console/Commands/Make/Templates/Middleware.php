@@ -7,8 +7,7 @@ namespace <?= $namespace ?>;
 use Src\Interfaces\Middleware;
 use Src\Http\Request;
 
-class <?= $className ?> implements Middleware
-
+class <?= $name ?> implements Middleware
 {
     public function handle(Request $request, \Closure $next): mixed
     {
