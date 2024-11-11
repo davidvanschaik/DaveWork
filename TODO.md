@@ -6,27 +6,26 @@ A list of features I would like to build for my framework to keep track on the p
 ## Features
 - Routing system with (model binding ???)
 - Middleware
+- Own build in functions (zephir)
 - ORM Pattern vs Eloquent
 - Making own artisan command
-- Caching
-- IDE Helper
+- Migrations table 
+
+### Extra's
 - Custom PHP-Error pages
-- Own build in functions (zephir)
-- Collection icountable iterata
-- Security (???)
 - Own php template system
+- Collection icountable iterata
 
 ### Middleware
 - Authentication Middleware
 - Validation Middleware
 - Verification Middleware
-- Permission
+- Permission Middleware
 - Session Middleware
-- Cache Header
-- Require Password
+- Cache Middleware
+- CSRF protection
 
 #### Optional
-- CSRF protection
 - Log Middleware
 - Handle Exceptions
 - Encrypted Cookies
