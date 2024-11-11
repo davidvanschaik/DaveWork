@@ -3,7 +3,6 @@
 namespace Src\Console\Commands\Make;
 
 use Src\Console\Response as CLI;
-use Src\Console\Validator;
 
 class MakeFileController
 {
@@ -24,7 +23,7 @@ class MakeFileController
     protected function typeExist(): void
     {
         if (! in_array($this->type, ['controller', 'migration', 'middleware'])) {
-            Validator::handleError();
+            CLI::error();
             exit;
         }
     }
@@ -32,7 +31,7 @@ class MakeFileController
     protected function fileExist(string $dir, string $name): void
     {
         if (file_exists($dir . $name . '.php') || $dir == $name) {
-            echo CLI::RED . 'File already exists' . CLI::RESET . PHP_EOL;
+            echo CLI::block() . CLI::echo('RED', " File already exists. \n");
             exit;
         }
     }
@@ -68,7 +67,7 @@ class MakeFileController
         $path = $this->checkIfMigration($this->dir, $this->name);
         file_put_contents($path, $file);
 
-        echo CLI::echo('GREEN', ucfirst($this->type) . " [$path] successfully created");
+        echo CLI::block() . CLI::echo('GREEN', ' ' . ucfirst($this->type) . " [$path] successfully created. \n");
     }
 
     private function checkIfMigration(string $path, string $fileName): string

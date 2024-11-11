@@ -6,15 +6,16 @@ use Src\Console\Commands\Command;
 
 class Make extends MakeFileController implements Command
 {
+    private array $arg;
+
     public function __construct(array $arg)
     {
-        $this->type = $arg[1];
-        $this->name = $arg[2];
+        $this->arg = $arg;
     }
 
     public function setCommand(): void
     {
-        $this->validate($this->type, $this->name);
+        $this->validate($this->arg[1], $this->arg[2]);
         $this->createFile($this->generateFile());
     }
 }

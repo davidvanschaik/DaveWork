@@ -46,13 +46,15 @@ class DatabaseController
     protected function validateTables(array $tables, string $command): void
     {
         if (empty($tables)) {
-            echo 'Nothing to ' . $command . PHP_EOL;
+            echo CLI::block() . " Nothing to $command. \n \n";
             exit;
         }
     }
 
-    protected function executeMigrations(array $migrationClass, string $func): void
+    protected function executeMigrations(array $migrationClass, string $func, string $message): void
     {
+        echo CLI::block() . " $message migrations. \n \n";
+
         foreach ($migrationClass as $migration) {
             require_once "database/Migrations/{$migration}.php";
             $migrationClass = $this->getClassName($migration);
@@ -64,7 +66,7 @@ class DatabaseController
     private function getClassName(string $migration): string
     {
         $parts = explode('_', substr($migration, 4));
-        return "Database\\Migrations\\" . implode('', array_map('ucfirst', $parts));;
+        return "Database\\Migrations\\" . implode('', array_map('ucfirst', $parts));
     }
 
     private function runMigration(string $class, string $function): string
@@ -77,7 +79,8 @@ class DatabaseController
 
     private function showOutput(string $time, $migration): void
     {
-        echo str_pad($migration, 150 - strlen($time . 'ms DONE'), '.');
-        echo $time . 'ms ' . CLI::GREEN . 'DONE' . CLI::RESET . PHP_EOL;
+        $dots = str_repeat('.', 150 - strlen("$migration {$time}ms DONE"));
+        echo "    $migration " . CLI::echo('GRAY', "$dots {$time}ms ");
+        echo CLI::echo('GREEN', "DONE \n");
     }
 }

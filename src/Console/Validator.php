@@ -21,7 +21,7 @@ class Validator
     public function emptyCommand(): bool
     {
         if (empty($this->args)) {
-            return $this->handleError();
+            return CLI::error();
         }
         return $this->commandExist();
     }
@@ -30,8 +30,8 @@ class Validator
     {
         $this->parse();
 
-        if (! in_array($this->args[0], ['make', 'db', 'host'])) {
-            return $this->handleError();
+        if (! in_array($this->args[0], ['make', 'db', 'host', 'server'])) {
+            return CLI::error();
         }
         return true;
     }
@@ -41,12 +41,5 @@ class Validator
         $command = explode(':', $this->args[0]);
         array_shift($this->args);
         $this->args = array_merge($command, $this->args);
-    }
-
-    public static function handleError(): false
-    {
-        echo CLI::echo('RED', 'Invalid command given');
-        echo 'More info: ' . CLI::echo('GREEN', "'php commander help'");
-        return false;
     }
 }
