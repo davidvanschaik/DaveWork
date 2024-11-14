@@ -16,9 +16,6 @@ class Container
         $this->instances[$key] = $func;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function get(string $key): mixed
     {
         if (array_key_exists($key, $this->shared)) {
@@ -29,6 +26,6 @@ class Container
             return call_user_func($this->instances[$key]);
         }
 
-        dd("No match found for $key");
+        var_dump("No match found for $key") . die;
     }
 }
