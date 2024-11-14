@@ -6,9 +6,9 @@ namespace <?= $namespace ?>;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
-use Src\Interfaces\Migration;
+use Src\Abstracts\Migration;
 
-class Create<?= $class ?>Table implements Migration
+return new class extends Migration
 {
     public function run(Builder $schema): void
     {
@@ -22,4 +22,4 @@ class Create<?= $class ?>Table implements Migration
     {
         $schema->dropIfExists('<?= strtolower($class) . 's' ?>');
     }
-}
+};

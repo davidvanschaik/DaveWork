@@ -6,9 +6,9 @@ namespace Database\Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
-use Src\Interfaces\Migration;
+use Src\Abstracts\Migration;
 
-class CreateCommentTable implements Migration
+return new class extends Migration
 {
     public function run(Builder $schema): void
     {
@@ -25,4 +25,4 @@ class CreateCommentTable implements Migration
     {
         $schema->dropIfExists('comments');
     }
-}
+};

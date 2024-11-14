@@ -6,9 +6,9 @@ namespace Database\Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
-use Src\Interfaces\Migration;
+use Src\Abstracts\Migration;
 
-class CreatePostTable implements Migration
+return new class extends Migration
 {
     public function run(Builder $schema): void
     {
@@ -28,4 +28,4 @@ class CreatePostTable implements Migration
     {
         $schema->dropIfExists('posts');
     }
-}
+};

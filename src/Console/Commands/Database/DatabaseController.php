@@ -3,6 +3,7 @@
 namespace Src\Console\Commands\Database;
 
 use Src\Console\Response as CLI;
+use Src\Core\App;
 use Src\Providers\DatabaseServiceProvider as DB;
 
 class DatabaseController
@@ -54,25 +55,39 @@ class DatabaseController
     protected function executeMigrations(array $migrationClass, string $func, string $message): void
     {
         echo CLI::block() . " $message migrations. \n \n";
-
-        foreach ($migrationClass as $migration) {
-            require_once "database/Migrations/{$migration}.php";
-            $migrationClass = $this->getClassName($migration);
-            $time = $this->runMigration($migrationClass, $func);
-            $this->showOutput($time, $migration);
-        }
+        $this->setInstance();
+        $this->requireFile($migrationClass, $func);
     }
 
-    private function getClassName(string $migration): string
+    private function setInstance(): void
     {
-        $parts = explode('_', substr($migration, 4));
-        return "Database\\Migrations\\" . implode('', array_map('ucfirst', $parts));
+        App::getInstance()->singleton('MigrationRegistration', function () {
+            return new class {
+                public array $classes = [];
+            };
+        });
     }
 
-    private function runMigration(string $class, string $function): string
+    private function requireFile(array $migrations, string $func): void
+    {
+        foreach ($migrations as $file) {
+            require_once "database/Migrations/{$file}.php";
+        }
+        $this->runMigration($migrations, $func);
+    }
+
+    private function runMigration(array $migration, string $func): void
+    {
+        array_map(function ($file, $class) use ($func) {
+            $time = $this->callFunction($class, $func);
+            $this->showOutput($time, $file);
+        }, $migration, App::getInstance()->resolve('MigrationRegistration')->classes);
+    }
+
+    private function callFunction(object $class, string $function): string
     {
         $startTime = microtime('true');
-        (new $class())->$function(DB::get());
+        $class->$function(DB::get());
         $endTime = microtime(true);
         return number_format(($endTime - $startTime) * 1000, 2);
     }
