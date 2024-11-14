@@ -8,7 +8,7 @@ use Src\Console\Response as CLI;
 
 class Seed implements Command
 {
-    public function setCommand(): void
+    public function __invoke(): void
     {
         DB::run();
         echo CLI::block() . " Seeding database. \n";

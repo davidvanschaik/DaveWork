@@ -13,7 +13,7 @@ class Make extends MakeFileController implements Command
         $this->arg = $arg;
     }
 
-    public function setCommand(): void
+    public function __invoke(): void
     {
         $this->validate($this->arg[1], $this->arg[2]);
         $this->createFile($this->generateFile());

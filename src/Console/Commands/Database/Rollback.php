@@ -6,7 +6,7 @@ use Src\Console\Commands\Command;
 
 class Rollback extends DatabaseController implements Command
 {
-    public function setCommand(): void
+    public function __invoke(): void
     {
         $tables = $this->tableExist($migrations = $this->getMigrations(true));
         $this->validateTables($tables, 'rollback');

@@ -17,7 +17,7 @@ class Kernel
     private function callFunction(array $arg): void
     {
         $class = __NAMESPACE__ . $this->getDirectory($arg);
-        (new $class($arg))->setCommand();
+        (new $class($arg))();
     }
 
     private function getDirectory(array $arg): string

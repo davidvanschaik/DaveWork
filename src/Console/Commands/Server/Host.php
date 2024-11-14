@@ -8,22 +8,21 @@ use Src\Console\Commands\Command;
 class Host implements Command
 {
     private int $port;
-    private mixed $server;
 
-    public function __construct(array $arg)
+    public function __construct()
     {
         $this->port = 8000;
         chdir('public');
         $this->terminateServer($this->fileName());
     }
 
-    public function setCommand(): void
+    public function __invoke(): void
     {
-        while ($this->availablePort($this->server = popen("php -S 127.0.0.1:{$this->port} 2>&1", 'r'))) {
+        while ($this->availablePort($server = popen("php -S 127.0.0.1:{$this->port} 2>&1", 'r'))) {
             sleep(1);
             $this->port++;
         }
-        $this->startServer();
+        $this->startServer($server);
     }
 
     private function availablePort(mixed $process): bool
@@ -36,13 +35,13 @@ class Host implements Command
         return false;
     }
 
-    private function startServer(): void
+    private function startServer(string $server): void
     {
         sleep(1);
         echo CLI::block() . CLI::echo('GREEN', " Server running on [http://127.0.0.1:{$this->port}] \n \n");
         echo CLI::echo('YELLOW', "    Press Ctrl+C to stop the server \n \n");
 
-        $this->validateResponse($this->server);
+        $this->validateResponse($server);
     }
 
     private function validateResponse($server): void
