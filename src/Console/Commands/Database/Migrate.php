@@ -3,14 +3,15 @@
 namespace Src\Console\Commands\Database;
 
 use Src\Console\Commands\Command;
+use Src\Console\Commands\Database\Service\DatabaseService;
 
-class Migrate extends DatabaseController implements Command
+class Migrate extends DatabaseService implements Command
 {
     public function __invoke(): void
     {
         $tables = $this->tableExist($migrations = $this->getMigrations(false));
         $this->validateTables($tables, 'migrate');
-        $this->executeMigrations($migrations, 'run', 'Running');
+        $this->executeMigrations($migrations, $tables, 'run', 'Running');
         echo PHP_EOL;
     }
 }
