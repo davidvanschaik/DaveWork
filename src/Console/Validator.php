@@ -30,7 +30,7 @@ class Validator
     {
         $this->parse();
 
-        if (! in_array($this->args[0], ['make', 'db', 'host', 'server'])) {
+        if (! in_array($this->args[0], ['make', 'db', 'host'])) {
             return CLI::error();
         }
         return true;
@@ -42,4 +42,6 @@ class Validator
         array_shift($this->args);
         $this->args = array_merge($command, $this->args);
     }
+
+
 }
