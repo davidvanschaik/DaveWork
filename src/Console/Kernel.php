@@ -2,6 +2,8 @@
 
 namespace Src\Console;
 
+use Src\Console\Validators\Validator;
+
 require 'config/database.php';
 
 class Kernel
@@ -26,6 +28,7 @@ class Kernel
             'db' => "\\Commands\\Database\\$arg[1]",
             'make' => "\\Commands\\Make\\$arg[0]",
             'host' => "\\Commands\\Server\\$arg[0]",
+             'help' => exit,
             default => null
         };
     }
