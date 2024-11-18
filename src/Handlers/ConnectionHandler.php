@@ -20,11 +20,6 @@ class ConnectionHandler
         $this->capsule->bootEloquent();
     }
 
-    public function getConnect(): Capsule
-    {
-        return $this->capsule;
-    }
-
     public function getSchema(): Schema
     {
         return $this->capsule->schema();

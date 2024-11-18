@@ -6,8 +6,6 @@ use Src\Console\Response as CLI;
 use Src\Core\App;
 use Src\Providers\DatabaseServiceProvider as DB;
 
-require __DIR__ . '/../../../../Helpers/helpers.php';
-
 class DatabaseService extends MigrationService
 {
     protected function executeMigrations(
@@ -46,7 +44,7 @@ class DatabaseService extends MigrationService
         return number_format(($endTime - $startTime) * 1000, 2);
     }
 
-    private function showOutput(string $time, $migration): void
+    private function showOutput(string $time, string $migration): void
     {
         $dots = str_repeat('.', 150 - strlen("$migration {$time}ms DONE"));
         echo "    $migration " . CLI::echo('GRAY', "$dots {$time}ms ");

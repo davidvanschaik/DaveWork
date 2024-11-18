@@ -39,7 +39,7 @@ class Server extends Request
         $this->validateResponse($server);
     }
 
-    private function terminateServer($file): void
+    private function terminateServer(string $file): void
     {
         pcntl_signal(SIGINT, function () use ($file) {
             $this->clear($this->fileName());

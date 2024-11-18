@@ -11,11 +11,11 @@ class MigrationService extends TableService
     protected function getMigrations(bool $bool): array
     {
         $this->bool = $bool;
-
-        foreach (glob('database/Migrations/*') as $migration) {
-            $migrationClass[] = pathinfo($migration, PATHINFO_FILENAME);
-        }
-        return $this->sortMigrations($migrationClass, $bool);
+        return $this->sortMigrations(array_map(function ($migration) {
+            return pathInfo($migration, PATHINFO_FILENAME);
+        }, glob('database/Migrations/*')),
+            $bool
+        );
     }
 
     protected function sortMigrations(array $migrations, bool $bool): array

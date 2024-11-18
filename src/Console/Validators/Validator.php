@@ -51,9 +51,7 @@ class Validator
     {
         $class = __NAMESPACE__ . match ($this->args[0]) {
             'db' => "\\DatabaseValidator",
-            'make' => "\\MakeValidator",
-            'host' => "\\HostValidator",
-            'help' => "\\HelpValidator"
+            default => "\\" . ucfirst($this->args[0]) . 'Validator'
         };
         return (new $class)($this->args);
     }

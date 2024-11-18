@@ -15,31 +15,21 @@ class ErrorHandler
         $this->errors[$key] = $message;
     }
 
-    public function store(array $error): void
+    public function store(array $error): false
     {
         $session = App::getInstance()->resolve('session');
         $session->set('errors', $error);
+        return false;
     }
 
     public function handleErrors(): bool
     {
         $errors = $this->checkIfErrorIsSet();
-
-        if (! empty($errors)) {
-            $this->store($errors);
-            return false;
-        }
-        return true;
+        return empty($errors) || $this->store($errors);
     }
 
     public function checkIfErrorIsSet(): array
     {
-        $errors = [];
-        foreach ($this->errors as $error) {
-            if (is_string($error)) {
-                $errors[] = $error;
-            }
-        }
-        return $errors;
+        return array_values(array_filter($this->errors, 'is_string'));
     }
 }

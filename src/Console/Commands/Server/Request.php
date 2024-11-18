@@ -16,7 +16,7 @@ class Request
         return __DIR__ . '/../../../../storage/logs/server.log';
     }
 
-    protected function validateResponse($server): void
+    protected function validateResponse(mixed $server): void
     {
         $key = 0;
 

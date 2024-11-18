@@ -6,7 +6,6 @@ namespace Src\Providers;
 
 use Src\Core\ServiceProvider;
 use Src\Exceptions\SyntaxExceptions;
-use Src\Exceptions\ValidationException;
 use Src\Handlers\ErrorHandler;
 use Src\Http\Request;
 use Src\Http\Session;

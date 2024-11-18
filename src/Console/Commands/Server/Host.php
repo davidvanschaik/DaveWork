@@ -2,7 +2,6 @@
 
 namespace Src\Console\Commands\Server;
 
-use Src\Console\Response as CLI;
 use Src\Console\Commands\Command;
 
 class Host extends Server implements Command
