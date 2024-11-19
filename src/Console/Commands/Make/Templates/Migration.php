@@ -1,4 +1,4 @@
-<?= "<?php\n" ?> <?php $class = ucfirst(substr($name, 7, -6)); ?>
+<?= "<?php\n" ?> <?php $class = ucfirst(substr($name, 11, -6)); ?>
 
 declare(strict_types=1);
 

@@ -2,9 +2,9 @@
 
 namespace Src\Console\Commands\Make;
 
-use Src\Console\Commands\Command;
+use Src\Console\Commands\Make\Service\FileTypeService;
 
-class Make extends MakeFileController implements Command
+class Make extends FileTypeService
 {
     private array $arg;
 
@@ -15,7 +15,8 @@ class Make extends MakeFileController implements Command
 
     public function __invoke(): void
     {
-        $this->validate($this->arg[1], $this->arg[2]);
-        $this->createFile($this->generateFile());
+        $this->validate($this->arg[1], $this->arg[2], $this->arg[3] ?? '');
+        $this->validateDirectory();
+        $this->makeFile($this->names, $this->types, $this->directories);
     }
 }
