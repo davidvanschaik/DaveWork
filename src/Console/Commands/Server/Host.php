@@ -2,9 +2,7 @@
 
 namespace Src\Console\Commands\Server;
 
-use Src\Console\Commands\Command;
-
-class Host extends Server implements Command
+class Host extends Server
 {
     public function __construct()
     {

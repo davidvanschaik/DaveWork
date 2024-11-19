@@ -2,8 +2,6 @@
 
 namespace Src\Console;
 
-use Src\Console\Validators\Validator;
-
 require 'config/database.php';
 
 class Kernel

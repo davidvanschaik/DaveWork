@@ -2,10 +2,9 @@
 
 namespace Src\Console\Commands\Database;
 
-use Src\Console\Commands\Command;
 use Src\Console\Commands\Database\Service\DatabaseService;
 
-class Rollback extends DatabaseService implements Command
+class Rollback extends DatabaseService
 {
     public function __invoke(): void
     {

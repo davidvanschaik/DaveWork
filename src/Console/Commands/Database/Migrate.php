@@ -2,10 +2,9 @@
 
 namespace Src\Console\Commands\Database;
 
-use Src\Console\Commands\Command;
 use Src\Console\Commands\Database\Service\DatabaseService;
 
-class Migrate extends DatabaseService implements Command
+class Migrate extends DatabaseService
 {
     public function __invoke(): void
     {
