@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Console\Validators;
+namespace Src\Console;
 
 use Src\Console\Response as CLI;
 
@@ -24,7 +24,7 @@ class Validator
     {
         if (empty($this->args)) {
             CLI::invalidCommand(" No command given. For info: 'php commander help'");
-             return false;
+            return false;
         }
         return $this->commandExist();
     }
@@ -40,6 +40,13 @@ class Validator
         return $this->validateCommand();
     }
 
+    private function showInfo(): false
+    {
+        echo CLI::block() . " Manage your project via the terminal with Commander. \n \n";
+        CLI::help(['Commands', 'db:', 'make:']);
+        exit;
+    }
+
     private function parse(): void
     {
         $command = explode(':', $this->args[0]);
@@ -47,11 +54,12 @@ class Validator
         $this->args = array_merge($command, $this->args);
     }
 
-    private function validateCommand(): bool
+    private function validateCommand(): bool | array
     {
         $class = __NAMESPACE__ . match ($this->args[0]) {
-            'db' => "\\DatabaseValidator",
-            default => "\\" . ucfirst($this->args[0]) . 'Validator'
+            'help' => $this->showInfo(),
+            'db' => "\\Commands\\DatabaseCommand",
+            default => "\\Commands\\" . ucfirst($this->args[0]) . 'Command'
         };
         return (new $class)($this->args);
     }

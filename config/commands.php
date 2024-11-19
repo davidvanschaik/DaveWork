@@ -7,12 +7,12 @@ return [
     ],
     [
         'migration' => 'Create new migration class',
-        'migration f' => 'Create new migration class with related factory',
-        'migration m' => 'Create new migration class with related model',
-        'migration fm' => 'Create new migration class with related factory and model',
-        'controller' => 'Create new controller class',
         'factory' => 'Create new factory class',
         'model' => 'Create new model class',
+        'model f' => 'Create new model class with related factory',
+        'model m' => 'Create new model class with related migration',
+        'model fm' => 'Create new model class with related factory and migration',
+        'controller' => 'Create new controller class',
         'middleware' => 'Create new middleware class',
         'view' => 'Create new view'
     ],
