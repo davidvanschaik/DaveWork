@@ -22,7 +22,7 @@ class Response
     {
         echo self::block() . self::echo("RED", " Invalid command given. \n \n");
         echo '    More info: ' . self::echo('GREEN', "'php commander help' \n \n");
-        return false;
+        exit;
     }
 
     public static function echo(string $color, string $message): string
@@ -39,6 +39,7 @@ class Response
     {
         echo self::block('ERROR', 'RED_BG') . "$message \n \n";
         self::errorResponseCLI();
+        exit;
     }
 
     public static function errorResponseCLI(): void
@@ -61,6 +62,7 @@ class Response
         echo CLI::block('ERROR', 'RED_BG') . " Invalid command given. \n";
         self::showCommandInfo(self::commandInfo($key));
         self::errorResponseCLI();
+        exit;
     }
 
     public static function commandInfo(mixed $key = ''): array
@@ -75,5 +77,6 @@ class Response
         for ($x = 0; $x < 3; $x++) {
             self::showCommandInfo($info[$x], $type[$x]);
         }
+        exit;
     }
 }
