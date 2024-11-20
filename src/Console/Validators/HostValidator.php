@@ -1,10 +1,10 @@
 <?php
 
-namespace Src\Console\Commands;
+namespace Src\Console\Validators;
 
 use Src\Abstracts\Command;
 
-class HostCommand extends Command
+class HostValidator extends Command
 {
     public function __invoke(array $arg): bool
     {

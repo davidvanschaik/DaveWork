@@ -1,10 +1,10 @@
 <?php
 
-namespace Src\Console\Commands;
+namespace Src\Console\Validators;
 
 use Src\Abstracts\Command;
 
-class DatabaseCommand extends Command
+class DatabaseValidator extends Command
 {
     protected array $commands = ['migrate', 'rollback', 'seed'];
 

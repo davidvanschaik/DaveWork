@@ -1,11 +1,11 @@
 <?php
 
-namespace Src\Console\Commands;
+namespace Src\Console\Validators;
 
 use Src\Abstracts\Command;
 use Src\Console\Response as CLI;
 
-class MakeCommand extends Command
+class MakeValidator extends Command
 {
     protected array $commands = ['controller', 'migration', 'middleware', 'model', 'factory', 'view'];
 
@@ -20,8 +20,7 @@ class MakeCommand extends Command
         if (
             $this->validate(1, $this->commands, 1) &&
             $this->count($this->countCommands(), "make:", 1) &&
-            $this->fileName() &&
-            $this->relatedFiles()
+            $this->fileName() && $this->relatedFiles()
         ) {
             return true;
         }
@@ -37,16 +36,17 @@ class MakeCommand extends Command
     {
         if (! isset($this->args[2])) {
             CLI::invalidCommand(" Expecting filename.");
-            return false;
         }
         return true;
     }
 
     private function relatedFiles(): bool
     {
-        if ($this->args[1] == 'model' && isset($this->args[3]) && ! in_array($this->args[3], ['f', 'm', 'fm'])) {
+        if ($this->args[1] == 'model'
+            && isset($this->args[3])
+            && ! in_array($this->args[3], ['f', 'm', 'fm'])
+        ) {
             CLI::infoError(1);
-            return false;
         }
         return true;
     }
