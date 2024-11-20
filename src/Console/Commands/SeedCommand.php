@@ -1,11 +1,11 @@
 <?php
 
-namespace Src\Console\Commands\Database;
+namespace Src\Console\Commands;
 
 use Database\Seeders\DatabaseSeeder as DB;
 use Src\Console\Response as CLI;
 
-class Seed
+class SeedCommand
 {
     public function __invoke(): void
     {
