@@ -1,14 +1,15 @@
 <?php
 
-namespace Src\Console\Commands\Database\Service;
+namespace Src\Console\Services;
 
 use Src\Console\Response as CLI;
 use Src\Core\App;
+use Src\Helpers\DatabaseHelper;
 use Src\Providers\DatabaseServiceProvider as DB;
 
-class DatabaseService extends MigrationService
+class DatabaseService
 {
-    protected function executeMigrations(
+    public function executeMigrations(
         array $migrations,
         array $tables,
         string $func,
@@ -17,7 +18,16 @@ class DatabaseService extends MigrationService
     {
         echo CLI::block() . " $message migrations. \n \n";
         $this->setInstance();
-        $this->requireFile($this->migrationsFile($migrations, $tables), $func);
+        $this->requireFile(DatabaseHelper::migrationsFile($migrations, $tables), $func);
+    }
+
+    protected function setInstance(): void
+    {
+        App::getInstance()->singleton('MigrationRegistration', function () {
+            return new class {
+                public array $classes = [];
+            };
+        });
     }
 
     protected function requireFile(array $migrations, string $func): void

@@ -1,20 +1,21 @@
 <?php
 
-namespace Src\Console\Commands\Make\Service;
+namespace Src\Console\Services;
 
-use Src\Console\Response as CLI;
+use Src\Helpers\FileHelper as Helper;
 
-class FileTypeService extends CreateFileService
+class MakeService
 {
-    protected array $types;
-    protected array $names;
-    protected array $directories;
+    public array $types;
+    public array $names;
+    public array $directories;
 
-    protected function validate(string $type, string $name, string $related): void
+    public function validate(string $type, string $name, string $related): object
     {
         $this->names = [$name];
         $this->types = [$type];
         $this->getRelatedTypes($related);
+        return $this;
     }
 
     private function getRelatedTypes(mixed $related): void
@@ -31,7 +32,7 @@ class FileTypeService extends CreateFileService
         array_push($this->types, ...$relatedTypes);
     }
 
-    protected function validateDirectory(): void
+    public function validateDirectory(): void
     {
         $this->directories = array_map(fn ($type) => $this->getDirectory($type), $this->types);
         $this->relatedFileNames();
@@ -58,17 +59,11 @@ class FileTypeService extends CreateFileService
     public function validateFileExist(): void
     {
         array_map(function ($type, $key) {
-            $function = $type == 'migration' ? 'migrationClassExist' : 'fileExist';
-            $this->$function($this->directories[$key], $this->names[$key], $type, $key);
+            $args = [$this->directories[$key], $this->names[$key], $type, $key];
+            $type == 'migration'
+                ? Helper::fileExist(...$args)
+                : $this->checkIfMigration($this->getDirectory($type), $this->names[$key]);
         }, $this->types, array_keys($this->types));
-    }
-
-    protected function fileExist(string $dir, string $name, string $type, int $key): void
-    {
-        if (file_exists($dir . $name . '.php') || $dir == $name) {
-            CLI::invalidCommand(" " . ucfirst($type) . " already exists.");
-            exit;
-        }
     }
 
     protected function setRelatedFileName(string $type): void
@@ -82,15 +77,16 @@ class FileTypeService extends CreateFileService
         }
     }
 
-    private function migrationClassExist(string $path, string $fileName, string $type, int $key): void
+    private function checkIfMigration(string $path, string $fileName): string
     {
         if ($path == 'database/Migrations/') {
             $migrations = glob('database/Migrations/*.php');
 
             foreach ($migrations as $migration) {
-                $this->fileExist(substr($migration, 24, -4), $fileName, $type, $key);
+                Helper::fileExist(substr($migration, 24, -4), $fileName);
             }
-            $this->names[$key] = '00' . count($migrations) + 1 . "_{$fileName}";
+            $fileName = '00' . count($migrations) + 1 . "_{$fileName}";
         }
+        return $path . $fileName . '.php';
     }
 }
