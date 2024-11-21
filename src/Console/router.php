@@ -8,4 +8,4 @@ $log = sprintf(
     $_SERVER['REQUEST_URI'],
     number_format((microtime(true) - $_SERVER['REQUEST_TIME']) * 1000, 2)
 );
-file_put_contents(__DIR__ . '/../../../../storage/logs/server.log', $log, FILE_APPEND);
+file_put_contents(__DIR__ . '/../../storage/logs/server.log', $log, FILE_APPEND);
