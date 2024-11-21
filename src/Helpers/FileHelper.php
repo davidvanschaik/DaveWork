@@ -11,7 +11,7 @@ class FileHelper
     private static string $name;
     private static string $type;
 
-    public static function fileExist(string $dir, string $name, string $type, int $key): void
+    public static function fileExist(string $dir, string $name, string $type = ''): void
     {
         if (file_exists($dir . $name . '.php') || $dir == $name) {
             CLI::invalidCommand(" " . ucfirst($type) . " already exists.");

@@ -60,9 +60,9 @@ class MakeService
     {
         array_map(function ($type, $key) {
             $args = [$this->directories[$key], $this->names[$key], $type, $key];
-            $type == 'migration'
+            $type != 'migration'
                 ? Helper::fileExist(...$args)
-                : $this->checkIfMigration($this->getDirectory($type), $this->names[$key]);
+                : $this->migrationClassExist($this->getDirectory($type), $this->names[$key], $key);
         }, $this->types, array_keys($this->types));
     }
 
@@ -77,16 +77,14 @@ class MakeService
         }
     }
 
-    private function checkIfMigration(string $path, string $fileName): string
+    private function migrationClassExist(string $path, string $fileName, int $key): void
     {
         if ($path == 'database/Migrations/') {
             $migrations = glob('database/Migrations/*.php');
-
             foreach ($migrations as $migration) {
                 Helper::fileExist(substr($migration, 24, -4), $fileName);
             }
-            $fileName = '00' . count($migrations) + 1 . "_{$fileName}";
+            $this->names[$key] = '00' . count($migrations) + 1 . "_{$fileName}";
         }
-        return $path . $fileName . '.php';
     }
 }
