@@ -10,9 +10,9 @@ class HostCommand
     public function __invoke(): void
     {
         $service = new Service();
-        while ($service->availablePort($server = popen("php -S " . Helper::server($service->port) . " 2>&1", 'r'))) {
+        while ($service->availablePort($server = popen("php -S " . $service->server() . " 2>&1", 'r'))) {
             sleep(1);
-            $service->port++;
+            Service::$port++;
         }
         $service->startServer($server);
     }

@@ -8,20 +8,25 @@ use Src\Helpers\ServerHelper as Helper;
 
 class HostService
 {
-    public int $port;
+    public static int $port;
 
     public function __construct()
     {
         chdir('public');
-        $this->port = 8000;
+        self::$port = 8000;
         Helper::terminateServer($this->fileName());
         Helper::clear($this->fileName());
+    }
+
+    public static function server(): string
+    {
+        return "127.0.0.1:" . self::$port;
     }
 
     public function availablePort(mixed $process): bool
     {
         if (str_contains(fgets($process), 'Address already in use')) {
-            echo '    ' . CLI::echo('GRAY', "Port: [" . Helper::server($this->port) . "] already in use... \n");
+            echo '    ' . CLI::echo('GRAY', "Port: [" . self::server() . "] already in use... \n");
             pclose($process);
             return true;
         }
@@ -31,7 +36,7 @@ class HostService
     public function startServer(mixed $server): void
     {
         sleep(1);
-        echo CLI::block() . CLI::echo('GREEN', " Server running on [http://" . Helper::server($this->port) . "] \n \n");
+        echo CLI::block() . CLI::echo('GREEN', " Server running on [http://" . self::server() . "] \n \n");
         echo CLI::echo('YELLOW', "    Press Ctrl+C to stop the server \n \n");
 
         $this->validateResponse($server);

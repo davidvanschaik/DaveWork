@@ -4,11 +4,6 @@ namespace Src\Helpers;
 
 class ServerHelper
 {
-    public static function server(int $port): string
-    {
-        return "127.0.0.1:$port";
-    }
-
     public static function terminateServer(string $fileName): void
     {
         pcntl_signal(SIGINT, function () use ($fileName) {
