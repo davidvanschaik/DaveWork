@@ -9,22 +9,17 @@ class MakeValidator extends Command
 {
     protected array $commands = ['controller', 'migration', 'middleware', 'model', 'factory', 'view'];
 
-    public function __invoke(array $arg): bool
+    public function __invoke(array $arg): void
     {
         $this->args = $arg;
-        return $this->validateCommand();
+        $this->validateCommand();
     }
 
-    private function validateCommand(): bool
+    private function validateCommand(): void
     {
-        if (
-            $this->validate(1, $this->commands, 1) &&
-            $this->count($this->countCommands(), "make:", 1) &&
-            $this->fileName() && $this->relatedFiles()
-        ) {
-            return true;
-        }
-        return false;
+        $this->validate(1, $this->commands, 1, 'make:')
+             ->count($this->countCommands(), "make:", 1)
+             ->fileName();
     }
 
     private function countCommands(): int
@@ -32,22 +27,26 @@ class MakeValidator extends Command
         return $this->args[1] == 'model' ? 4 : 3;
     }
 
-    private function fileName(): bool
+    private function fileName(): void
     {
         if (! isset($this->args[2])) {
-            CLI::invalidCommand(" Expecting filename.");
+            CLI::invalidCommand(" Expecting filename");
+            exit;
         }
-        return true;
+        $this->hasRelatedFiles();
     }
 
-    private function relatedFiles(): bool
+    private function hasRelatedFiles(): void
     {
-        if ($this->args[1] == 'model'
-            && isset($this->args[3])
-            && ! in_array($this->args[3], ['f', 'm', 'fm'])
-        ) {
-            CLI::infoError(1);
+        if ($this->args[1] == 'model' && isset($this->args[3])) {
+            $this->validateRelatedTypes();
         }
-        return true;
+    }
+
+    private function validateRelatedTypes(): void
+    {
+        if (! in_array($this->args[3], ['f', 'm', 'fm'])) {
+            CLI::infoError(3, 'make:');
+        }
     }
 }

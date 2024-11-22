@@ -20,5 +20,10 @@ return [
         'migration' => 'Runs all database migrations',
         'rollback' => 'Rollback all database migrations',
         'seed' => 'Seed the database with records'
+    ],
+    [
+        'model f' => 'Create new model class with related factory',
+        'model m' => 'Create new model class with related migration',
+        'model fm' => 'Create new model class with related factory and migration',
     ]
 ];
