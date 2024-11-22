@@ -8,20 +8,15 @@ class DatabaseValidator extends Command
 {
     protected array $commands = ['migrate', 'rollback', 'seed'];
 
-    public function __invoke(array $arg): bool
+    public function __invoke(array $arg): void
     {
         $this->args = $arg;
-        return $this->validateCommand();
+        $this->validateCommand();
     }
 
-    public function validateCommand(): bool
+    public function validateCommand(): void
     {
-        if (
-            $this->validate(1, $this->commands, 2) &&
-            $this->count(2, "db:", 1)
-        ) {
-            return true;
-        }
-        return false;
+        $this->validate(1, $this->commands, 2, 'make:');
+        $this->count(2, "db:", 1);
     }
 }

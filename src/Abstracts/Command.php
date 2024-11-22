@@ -10,21 +10,21 @@ abstract class Command
 
     abstract function __invoke(array $arg);
 
-    protected function validate(int $key, array $commands, string $commandInfo): bool
+    protected function validate(int $key, array $commands, string $commandInfo, string $command): self
     {
         if (empty($this->args[$key]) || ! in_array($this->args[$key], $commands)) {
-            CLI::infoError($commandInfo);
-            return false;
+            CLI::infoError($commandInfo, $command);
+            exit;
         }
-        return true;
+        return $this;
     }
 
-    protected function count(int $count, string $message, int $key): bool
+    protected function count(int $count, string $message, int $key): self
     {
         if (count($this->args) > $count) {
             CLI::invalidCommand(" To many arguments to '$message{$this->args[$key]}'");
-            return false;
+            exit;
         }
-        return true;
+        return $this;
     }
 }

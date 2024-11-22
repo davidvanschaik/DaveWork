@@ -57,9 +57,10 @@ class Response
         }
     }
 
-    public static function infoError(int $key): void
+    public static function infoError(int $key, string $command): void
     {
-        echo CLI::block('ERROR', 'RED_BG') . " Invalid command given. \n";
+        echo CLI::block('ERROR', 'RED_BG') . " Invalid command given \n";
+        echo self::YELLOW . "\n    php commander $command \n" . self::RESET;
         self::showCommandInfo(self::commandInfo($key));
         self::errorResponseCLI();
         exit;
@@ -74,6 +75,7 @@ class Response
     public static function help(array $type): void
     {
         $info = self::commandInfo();
+        echo self::YELLOW . "    php commander" . self::RESET;
         for ($x = 0; $x < 3; $x++) {
             self::showCommandInfo($info[$x], $type[$x]);
         }

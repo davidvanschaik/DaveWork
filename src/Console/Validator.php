@@ -18,8 +18,28 @@ class Validator
 
     public function validate(): array
     {
+        $this->emptyCommand()
+             ->commandExist()
+             ->setCommand();
+        return $this->args;
+    }
+
+    public function emptyCommand(): self
+    {
+        if (empty($this->args)) {
+            CLI::invalidCommand(" No command given. For info: 'php commander help'");
+        }
+        return $this;
+    }
+
+    private function commandExist(): self
+    {
         $this->parse();
-        return ! $this->validateCommand() ? [] : $this->args;
+
+        if (! in_array($this->args[0], ['make', 'db', 'host', 'help'])) {
+            CLI::invalidCommand(" Invalid command. For info: 'php commander help'");
+        }
+        return $this;
     }
 
     private function parse(): void
@@ -29,28 +49,19 @@ class Validator
         $this->args = array_merge($command, $this->args);
     }
 
-    public function validateCommand(): bool
-    {
-        if (empty($this->args) || ! in_array($this->args[0], $this->commands)) {
-            CLI::invalidCommand(" Invalid command given. For info: 'php commander help'");
-            return false;
-        }
-        return $this->setCommand();
-    }
-
-    private function setCommand(): bool | array
+    private function setCommand(): void
     {
         $class = __NAMESPACE__ . match ($this->args[0]) {
             'help' => $this->showInfo(),
             'db' => "\\Validators\\DatabaseValidator",
             default => "\\Validators\\" . ucfirst($this->args[0]) . 'Validator'
         };
-        return (new $class)($this->args);
+        (new $class)($this->args);
     }
 
     private function showInfo(): false
     {
         echo CLI::block() . " Manage your project via the terminal with Commander. \n \n";
-        CLI::help(['Commands', 'db:', 'make:']);
+        CLI::help(['', 'db:', 'make:']);
     }
 }
