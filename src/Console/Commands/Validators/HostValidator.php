@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Console\Validators;
+namespace Src\Console\Commands\Validators;
 
 use Src\Abstracts\Command;
 

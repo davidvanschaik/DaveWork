@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Console\Validators;
+namespace Src\Console\Commands\Validators;
 
 use Src\Abstracts\Command;
 use Src\Console\Response as CLI;
@@ -31,7 +31,6 @@ class MakeValidator extends Command
     {
         if (! isset($this->args[2])) {
             CLI::invalidCommand(" Expecting filename");
-            exit;
         }
         $this->hasRelatedFiles();
     }
