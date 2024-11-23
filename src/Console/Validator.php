@@ -51,10 +51,10 @@ class Validator
 
     private function setCommand(): void
     {
-        $class = __NAMESPACE__ . match ($this->args[0]) {
+        $class = __NAMESPACE__ . "\\Commands\\Validators\\" . match ($this->args[0]) {
             'help' => $this->showInfo(),
-            'db' => "\\Validators\\DatabaseValidator",
-            default => "\\Validators\\" . ucfirst($this->args[0]) . 'Validator'
+            'db' => "DatabaseValidator",
+            default => ucfirst($this->args[0]) . 'Validator'
         };
         (new $class)($this->args);
     }

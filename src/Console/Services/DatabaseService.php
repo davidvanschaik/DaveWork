@@ -4,24 +4,13 @@ namespace Src\Console\Services;
 
 use Src\Console\Response as CLI;
 use Src\Core\App;
-use Src\Helpers\DatabaseHelper;
+use Src\Database\Repositories\MigrationRepository;
+use Src\Helpers\DatabaseHelper as Helper;
 use Src\Providers\DatabaseServiceProvider as DB;
 
 class DatabaseService
 {
-    public function executeMigrations(
-        array $migrations,
-        array $tables,
-        string $func,
-        string $message
-    ): void
-    {
-        echo CLI::block() . " $message migrations. \n \n";
-        $this->setInstance();
-        $this->requireFile(DatabaseHelper::migrationsFile($migrations, $tables), $func);
-    }
-
-    protected function setInstance(): void
+    public function __construct()
     {
         App::getInstance()->singleton('MigrationRegistration', function () {
             return new class {
@@ -30,18 +19,33 @@ class DatabaseService
         });
     }
 
-    protected function requireFile(array $migrations, string $func): void
+    public function startMigrations(array $migrations, array $tables, string $message): object
     {
-        foreach ($migrations as $file) {
-            require_once "database/Migrations/{$file}.php";
-        }
-        $this->runMigration($migrations, $func);
+        echo CLI::block() . " $message migrations. \n \n";
+        return $this->requireFile(Helper::migrationsFile($migrations, $tables));
     }
 
-    private function runMigration(array $migrations, string $func): void
+    public function requireFile(array $migrations, string $path = 'database'): object
     {
+        foreach ($migrations as $file) {
+            require_once "$path/Migrations/$file.php";
+        }
+        return $this;
+    }
+
+    public function runMigrationWithoutOutput(array $migrations, string $func)
+    {
+//        var_dump(App::getInstance()->resolve('MigrationRegistration')->classes);
         array_map(function ($file, $class) use ($func) {
             $time = $this->callFunction($class, $func);
+//            MigrationRepository::insert($file);
+        }, $migrations, App::getInstance()->resolve('MigrationRegistration')->classes);
+    }
+
+    public function runMigrationWithOutput(array $migrations, string $func): void
+    {
+        array_map(function ($file, $class) use ($func) {
+            $time = $this->callFunction($class, $func, DB::get());
             $this->showOutput($time, $file);
         }, $migrations, App::getInstance()->resolve('MigrationRegistration')->classes);
     }

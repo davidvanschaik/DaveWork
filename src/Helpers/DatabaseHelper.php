@@ -9,12 +9,12 @@ class DatabaseHelper
 {
     private static bool $bool;
 
-    public static function getMigrations(bool $bool): array
+    public static function getMigrations(int $bool, string $path = 'database'): array
     {
         self::$bool = $bool;
         return self::sortMigrations(array_map(function ($migration) {
             return pathInfo($migration, PATHINFO_FILENAME);
-        }, glob('database/Migrations/*')), $bool);
+        }, glob("$path/Migrations/*")), $bool);
     }
 
     private static function sortMigrations(array $migrations, bool $bool): array
@@ -32,13 +32,13 @@ class DatabaseHelper
     public static function tableExist(array $migrations): array
     {
         return array_filter($migrations, function ($migration) {
-            if (DB::tableExists(self::getTable($migration)) == self::$bool) {
+            if (DB::tableExists(self::setTableName($migration)) == self::$bool) {
                 return $migration;
             }
         });
     }
 
-    private static function getTable(string $migration): string
+    public static function setTableName(string $migration): string
     {
         $table = explode('_', $migration);
         return $table[2] . 's';
