@@ -3,7 +3,6 @@
 namespace Src\Database\Repositories;
 
 use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Collection;
 use Src\Providers\DatabaseServiceProvider as DB;
 use Src\Helpers\DatabaseHelper as Helper;
 
@@ -16,7 +15,6 @@ class MigrationRepository
     {
         self::$table = DB::table('migrations');
         $this->batch = $this->last();
-
     }
 
     public function run(string $table): void
@@ -35,11 +33,6 @@ class MigrationRepository
     public function down(): void
     {
         self::$table->delete();
-    }
-
-    public function getBatch(): array
-    {
-        return self::$table->where('batch', $this->last())->get()->toArray();
     }
 
     public function last(): int
