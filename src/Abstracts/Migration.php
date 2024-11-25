@@ -7,6 +7,8 @@ use Src\Core\App;
 
 abstract class Migration
 {
+    public bool $silent = false;
+
     public function __construct()
     {
         App::getInstance()->resolve('MigrationRegistration')->classes[] = $this;
