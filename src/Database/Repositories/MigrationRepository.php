@@ -2,28 +2,51 @@
 
 namespace Src\Database\Repositories;
 
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Schema\Builder;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Collection;
 use Src\Providers\DatabaseServiceProvider as DB;
+use Src\Helpers\DatabaseHelper as Helper;
 
 class MigrationRepository
 {
-    private Builder $table;
+    private static Builder $table;
+    private int $batch;
 
     public function __construct()
     {
-        $this->table = DB::get();
+        self::$table = DB::table('migrations');
+        $this->batch = $this->last();
+
     }
 
-    public function insert(string $table)
+    public function run(string $table): void
     {
-        $this->connection->table($table, function (Blueprint $table) {
-
-        });
+        self::$table->insert([
+            'migration' => $table,
+            'batch' => $this->batch
+        ]);
     }
 
-    private function getMigrations()
+    public function getAll(): array
     {
-        $this->connection
+        return self::$table->get('migration')->toArray();
+    }
+
+    public function down(): void
+    {
+        self::$table->delete();
+    }
+
+    public function getBatch(): array
+    {
+        return self::$table->where('batch', $this->last())->get()->toArray();
+    }
+
+    public function last(): int
+    {
+        if (Helper::tableExists('migrations') && self::$table->get('batch')->last() != null) {
+            return (int)(self::$table->get('batch')->last())->batch + 1;
+        }
+        return 1;
     }
 }
