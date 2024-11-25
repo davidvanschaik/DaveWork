@@ -4,25 +4,26 @@ declare(strict_types=1);
 
 namespace Src\Providers;
 
-use Illuminate\Database\Schema\Builder;
-use Src\Handlers\ConnectionHandler;
+use Illuminate\Database\Query\Builder as Schema;
+use Illuminate\Database\Schema\Builder as Query;
+use Src\Database\Connections\Connection;
 
 class DatabaseServiceProvider
 {
-    protected static ConnectionHandler $connectionHandler;
+    protected static Query $schema;
 
     public static function register(array $options): void
     {
-        self::$connectionHandler = new ConnectionHandler($options);
+        self::$schema = (new Connection($options))->getSchema();
     }
 
-    public static function get(): Builder
+    public static function get(): Query
     {
-        return self::$connectionHandler->getSchema();
+        return self::$schema;
     }
 
-    public static function tableExists(string $table): bool
+    public static function table(string $table): Schema
     {
-        return self::get()->hasTable($table);
+        return self::$schema->getConnection()->table($table);
     }
 }
