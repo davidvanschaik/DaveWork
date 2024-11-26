@@ -14,7 +14,7 @@ return new class extends Migration
 
     public function run(Builder $schema): void
     {
-        $schema->create('activitys', function (Blueprint $table) {
+        $schema->create('activity', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
             $table->string('uri');
@@ -26,6 +26,6 @@ return new class extends Migration
 
     public function down(Builder $schema): void
     {
-        $schema->dropIfExists('activitys');
+        $schema->dropIfExists('activity');
     }
 };

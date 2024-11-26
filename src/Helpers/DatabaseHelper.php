@@ -43,13 +43,13 @@ class DatabaseHelper
 
     private static function collectMigrations(): array
     {
-        return array_reduce(self::getDirectories(), function ($migrations, $dir) {
-            $migrations[$dir] = self::FetchMigrations($dir);
+        return array_reduce(self::returnMigrationDirectories(), function ($migrations, $dir) {
+            $migrations[$dir] = self::fetchMigrations($dir);
             return $migrations;
         }, []);
     }
 
-    private static function getDirectories(): array
+    private static function returnMigrationDirectories(): array
     {
         if (self::tableExists('migrations') == self::$bool && !self::$bool) {
             return ['src/Database', 'database'];
@@ -57,7 +57,7 @@ class DatabaseHelper
         return ['database'];
     }
 
-    private static function FetchMigrations(string $dir): array
+    private static function fetchMigrations(string $dir): array
     {
         return self::sortMigrations(array_map(function ($migration) {
             return pathInfo($migration, PATHINFO_FILENAME);

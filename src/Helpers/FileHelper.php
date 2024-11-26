@@ -49,7 +49,7 @@ class FileHelper
 
     public static function createFile(string $dir, string $name, string $file, string $type): void
     {
-        $path = "$dir{$name}.php";
+        $path = "$dir$name.php";
         file_put_contents($path, $file);
 
         echo CLI::block() . CLI::echo('GREEN', ' ' . ucfirst($type) . " [$path] successfully created. \n \n");
