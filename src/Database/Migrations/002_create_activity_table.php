@@ -10,7 +10,7 @@ use Src\Abstracts\Migration;
 
 return new class extends Migration
 {
-    protected bool $silent = true;
+    public bool $silent = true;
 
     public function run(Builder $schema): void
     {
