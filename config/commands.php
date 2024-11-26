@@ -17,7 +17,7 @@ return [
         'view' => 'Create new view'
     ],
     [
-        'migration' => 'Runs all database migrations',
+        'migrate' => 'Runs all database migrations',
         'rollback' => 'Rollback all database migrations',
         'seed' => 'Seed the database with records'
     ],
