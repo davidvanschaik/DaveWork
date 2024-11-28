@@ -2,8 +2,8 @@
 
 namespace Src\Helpers;
 
+use Src\Database\Connections\Database as DB;
 use Src\Database\Repositories\MigrationRepository;
-use Src\Providers\DatabaseServiceProvider as DB;
 
 class DatabaseHelper
 {

@@ -4,8 +4,8 @@ namespace Src\Console\Services;
 
 use Src\Console\Response as CLI;
 use Src\Core\App;
+use Src\Database\Connections\Database as DB;
 use Src\Database\Repositories\MigrationRepository;
-use Src\Providers\DatabaseServiceProvider as DB;
 
 class DatabaseService
 {
