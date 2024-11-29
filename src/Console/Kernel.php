@@ -2,7 +2,7 @@
 
 namespace Src\Console;
 
-require 'config/database.php';
+require 'bootstrap/app.php';
 
 class Kernel
 {
