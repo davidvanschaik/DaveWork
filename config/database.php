@@ -1,8 +1,6 @@
 <?php
 
-use Src\Providers\DatabaseServiceProvider as DB;
-
-$options = [
+return [
     'driver'    => 'mysql',
     'host'      => '127.0.0.1',
     'port'      => '3306',
@@ -13,5 +11,3 @@ $options = [
     'collation' => 'utf8_unicode_ci',
     'prefix'    => '',
 ];
-
-DB::register($options);
