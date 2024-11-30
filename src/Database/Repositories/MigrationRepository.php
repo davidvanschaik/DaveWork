@@ -3,7 +3,7 @@
 namespace Src\Database\Repositories;
 
 use Illuminate\Database\Query\Builder;
-use Src\Providers\DatabaseServiceProvider as DB;
+use Src\Database\Connections\Database as DB;
 use Src\Helpers\DatabaseHelper as Helper;
 
 class MigrationRepository
