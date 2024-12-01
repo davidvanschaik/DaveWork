@@ -26,7 +26,8 @@ class App
 
     public function run(): void
     {
-        (new AppServiceProvider($this))->register();
+        $providers = require __DIR__ . "/../../config/app.php";
+        array_map(fn ($provider) => (new $provider($this))->register(), $providers['providers']);
     }
 
     public function prototype(string $key, callable $func): void
