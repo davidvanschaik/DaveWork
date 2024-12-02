@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Src\Middleware;
 
+use Src\Contracts\Middleware;
 use Src\Core\App;
-use Src\Handlers\ErrorHandler;
 use Src\Http\Request;
-use Src\Interfaces\Middleware;
 use Src\Validation\SignupValidation;
 
 class ValidationMiddleware implements Middleware
@@ -37,12 +36,12 @@ class ValidationMiddleware implements Middleware
 
     private function setValidationParams(): void
     {
-        match ($this->request->uri()) {
-            '/login'           => $this->validationParams = ['email', 'password', 'username', 'phone'],
-            '/update-profile'  => $this->validationParams = ['email', 'phone'],
-            '/reset-password'  => $this->validationParams = ['password'],
-            '/delete-account'  => $this->validationParams = ['email', 'username'],
-            '/forgot-password' => $this->validationParams = ['email'],
+        $this->validationParams = match ($this->request->uri()) {
+            '/login'           => ['email', 'password', 'username', 'phone'],
+            '/update-profile'  => ['email', 'phone'],
+            '/reset-password'  => ['password'],
+            '/delete-account'  => ['email', 'username'],
+            '/forgot-password' => ['email'],
             default            => null,
         };
     }

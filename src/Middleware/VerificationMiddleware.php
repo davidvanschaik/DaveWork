@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Src\Middleware;
 
-use App\Repositories\UserRepository;
+use Src\Contracts\Middleware;
 use Src\Core\App;
-use Src\Handlers\ErrorHandler;
 use Src\Http\Request;
-use Src\Interfaces\Middleware;
 use Src\Validation\LoginValidation;
 
 class VerificationMiddleware implements Middleware
@@ -26,7 +24,7 @@ class VerificationMiddleware implements Middleware
     public function handle(Request $request, \Closure $next): mixed
     {
         if ($this->postData['submit'] !== 'Sign Up') {
-            if (! $this->loginValidation->verify($this->postData)) {
+            if (! $this->loginValidation->verify()) {
                 redirect('back');
                 return false;
             }

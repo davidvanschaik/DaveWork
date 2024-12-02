@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Src\Middleware;
 
+use Src\Contracts\Middleware;
 use Src\Core\App;
-use Src\Http\{Request, Session};
 use Src\Handlers\SessionTimeOutHandler;
-use Src\Interfaces\Middleware;
+use Src\Http\Request;
+use Src\Http\Session;
 
 class SessionMiddleware implements Middleware
 {

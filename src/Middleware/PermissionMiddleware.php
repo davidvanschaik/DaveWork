@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Src\Middleware;
 
+use Src\Contracts\Middleware;
 use Src\Http\Request;
-use Src\Interfaces\Middleware;
 
 class PermissionMiddleware implements Middleware
 {
