@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Console\Commands;
+namespace Src\Console\Commands\Database;
 
 use Src\Console\Services\DatabaseService as Service;
 use Src\Helpers\DatabaseHelper as Helper;

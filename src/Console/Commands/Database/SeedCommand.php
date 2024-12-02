@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Console\Commands;
+namespace Src\Console\Commands\Database;
 
 use Database\Seeders\DatabaseSeeder as DB;
 use Src\Console\Response as CLI;
