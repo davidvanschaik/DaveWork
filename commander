@@ -2,6 +2,7 @@
 <?php
 
 require 'vendor/autoload.php';
+require 'bootstrap/app.php';
 
 use Src\Console\Kernel;
 

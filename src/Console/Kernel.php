@@ -2,8 +2,6 @@
 
 namespace Src\Console;
 
-require 'bootstrap/app.php';
-
 class Kernel
 {
     public function handle(): void
