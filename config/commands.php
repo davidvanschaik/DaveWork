@@ -19,7 +19,8 @@ return [
     [
         'migrate' => 'Runs all database migrations',
         'rollback' => 'Rollback all database migrations',
-        'seed' => 'Seed the database with records'
+        'seed' => 'Seed the database with records',
+        'fresh' => 'Drop all tables and run migrations'
     ],
     [
         'model f' => 'Create new model class with related factory',

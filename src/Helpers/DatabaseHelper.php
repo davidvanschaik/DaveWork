@@ -68,4 +68,9 @@ class DatabaseHelper
     {
         return !self::$bool ? $migrations : array_reverse($migrations);
     }
+
+    public static function dropTables(): void
+    {
+        DB::dropTables();
+    }
 }

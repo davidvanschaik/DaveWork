@@ -35,20 +35,20 @@ class DatabaseService
         $this->runMigrations($func);
     }
 
-    public function runMigrations(string $func): void
+    public function runMigrations(string $func, $silent = true): void
     {
-        array_map(function ($migration, $key) use ($func) {
-            $this->requireFile($key, $func);
+        array_map(function ($migration, $key) use ($func, $silent) {
+            $this->requireFile($key, $func, $silent);
         }, $this->migrations, array_keys($this->migrations));
     }
 
-    private function requireFile(string $key, string $func): void
+    private function requireFile(string $key, string $func, bool $silent): void
     {
         $this->setInstance();
         foreach ($this->migrations[$key] as $file) {
             require_once "$key/Migrations/$file.php";
         }
-        $this->executeMigration($key, $func);
+        $this->executeMigration($key, $func, $silent);
     }
 
     private function setInstance(): void
@@ -60,12 +60,12 @@ class DatabaseService
         });
     }
 
-    private function executeMigration($key, $func): void
+    private function executeMigration(string $key, string $func, bool $silent): void
     {
         $repo = new MigrationRepository();
-        array_map(function ($file, $class) use ($func, $repo) {
+        array_map(function ($file, $class) use ($func, $repo, $silent) {
             $time = $this->callFunction($class, $func);
-            $this->validateOutput($class, $file, $time, $func, $repo);
+            $this->validateOutput($class, $file, $time, $func, $repo, $silent);
         }, $this->migrations[$key], App::getInstance()->resolve('MigrationRegistration')->classes);
     }
 
@@ -82,13 +82,25 @@ class DatabaseService
         string $fileName,
         string $time,
         string $func,
-        MigrationRepository $repo
+        MigrationRepository $repo,
+        bool $silent
     ): void
     {
+        $function = $this->migrationFunction($func);
         if (! $class->silent) {
-            $this->showOutput($time, $fileName);
-            $repo->$func($fileName);
+            $repo->$function($fileName);
         }
+        if (! $class->silent && $silent) {
+            $this->showOutput($time, $fileName);
+        }
+    }
+
+    private function migrationFunction(string $function): string
+    {
+        return match ($function) {
+            'run' => 'insert',
+            'down' => 'delete',
+        };
     }
 
     private function showOutput(string $time, string $migration): void

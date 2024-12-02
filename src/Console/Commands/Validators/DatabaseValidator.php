@@ -6,7 +6,7 @@ use Src\Abstracts\Command;
 
 class DatabaseValidator extends Command
 {
-    protected array $commands = ['migrate', 'rollback', 'seed'];
+    protected array $commands = ['migrate', 'rollback', 'seed', 'fresh'];
 
     public function __invoke(array $arg): void
     {
