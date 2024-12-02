@@ -3,10 +3,11 @@
 namespace Src\Database\Repositories;
 
 use Illuminate\Database\Query\Builder;
+use Src\Contracts\Repository;
 use Src\Database\Connections\Database as DB;
 use Src\Helpers\DatabaseHelper as Helper;
 
-class MigrationRepository
+class MigrationRepository implements Repository
 {
     private static Builder $table;
     private int $batch;
@@ -17,22 +18,22 @@ class MigrationRepository
         $this->batch = $this->last();
     }
 
-    public function run(string $table): void
+    public function insert(mixed $info): void
     {
         self::$table->insert([
-            'migration' => $table,
+            'migration' => $info,
             'batch' => $this->batch
         ]);
+    }
+
+    public function delete(): void
+    {
+        self::$table->delete();
     }
 
     public function getAll(): array
     {
         return self::$table->get('migration')->toArray();
-    }
-
-    public function down(): void
-    {
-        self::$table->delete();
     }
 
     public function last(): int

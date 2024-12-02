@@ -2,10 +2,10 @@
 
 namespace Src\Abstracts;
 
-use Illuminate\Database\Schema\Builder;
+use Src\Contracts\Migration as MigrationInterface;
 use Src\Core\App;
 
-abstract class Migration
+abstract class Migration implements MigrationInterface
 {
     public bool $silent = false;
 
@@ -13,8 +13,4 @@ abstract class Migration
     {
         App::getInstance()->resolve('MigrationRegistration')->classes[] = $this;
     }
-
-    abstract public function run(Builder $schema);
-
-    abstract public function down(Builder $schema);
 }

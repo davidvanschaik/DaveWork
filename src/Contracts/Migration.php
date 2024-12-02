@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Interfaces;
+namespace Src\Contracts;
 
 use Illuminate\Database\Schema\Builder;
 
