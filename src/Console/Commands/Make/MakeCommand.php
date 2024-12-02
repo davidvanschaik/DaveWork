@@ -3,9 +3,10 @@
 namespace Src\Console\Commands\Make;
 
 use Src\Console\Services\MakeService as Service;
+use Src\Contracts\Command;
 use Src\Helpers\FileHelper as Helper;
 
-class MakeCommand
+class MakeCommand implements Command
 {
     private array $arg;
 

@@ -2,9 +2,9 @@
 
 namespace Src\Console\Commands\Validators;
 
-use Src\Abstracts\Command;
+use Src\Abstracts\CommandValidator;
 
-class HostValidator extends Command
+class HostValidator extends CommandValidator
 {
     public function __invoke(array $arg): void
     {

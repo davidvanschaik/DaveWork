@@ -2,9 +2,9 @@
 
 namespace Src\Console\Commands\Validators;
 
-use Src\Abstracts\Command;
+use Src\Abstracts\CommandValidator;
 
-class DatabaseValidator extends Command
+class DatabaseValidator extends CommandValidator
 {
     protected array $commands = ['migrate', 'rollback', 'seed', 'fresh'];
 

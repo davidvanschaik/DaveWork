@@ -3,8 +3,9 @@
 namespace Src\Console\Commands\Server;
 
 use Src\Console\Services\HostService as Service;
+use Src\Contracts\Command;
 
-class HostCommand
+class HostCommand implements Command
 {
     public function __invoke(): void
     {

@@ -4,8 +4,9 @@ namespace Src\Console\Commands\Database;
 
 use Database\Seeders\DatabaseSeeder as DB;
 use Src\Console\Response as CLI;
+use Src\Contracts\Command;
 
-class SeedCommand
+class SeedCommand implements Command
 {
     public function __invoke(): void
     {

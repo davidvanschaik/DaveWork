@@ -3,9 +3,10 @@
 namespace Src\Console\Commands\Database;
 
 use Src\Console\Services\DatabaseService as Service;
+use Src\Contracts\Command;
 use Src\Helpers\DatabaseHelper as Helper;
 
-class RollbackCommand
+class RollbackCommand implements Command
 {
     public function __invoke(): void
     {

@@ -3,9 +3,10 @@
 namespace Src\Console\Commands\Database;
 
 use Src\Console\Services\DatabaseService as Service;
+use Src\Contracts\Command;
 use Src\Helpers\DatabaseHelper as Helper;
 
-class MigrateCommand
+class MigrateCommand implements Command
 {
     public function __invoke(): void
     {

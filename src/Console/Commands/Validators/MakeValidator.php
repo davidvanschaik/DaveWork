@@ -2,10 +2,10 @@
 
 namespace Src\Console\Commands\Validators;
 
-use Src\Abstracts\Command;
+use Src\Abstracts\CommandValidator;
 use Src\Console\Response as CLI;
 
-class MakeValidator extends Command
+class MakeValidator extends CommandValidator
 {
     protected array $commands = ['controller', 'migration', 'provider', 'middleware', 'model', 'factory', 'view'];
 
