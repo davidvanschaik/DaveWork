@@ -9,11 +9,9 @@ A list of features I would like to build for my framework to keep track on the p
 - Own build in functions (zephir)
 - ORM Pattern vs Eloquent
 - Making own artisan command
-
-# PRIO
 - Migrations table
 - Helpers maken
-- env
+- env 
 
 ### Extra's
 - Custom PHP-Error pages
