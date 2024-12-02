@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace <?= $namespace ?>;
 
-use Src\Interfaces\Middleware;
+use Src\Contracts\Middleware;
 use Src\Http\Request;
 
 class <?= $name ?> implements Middleware
