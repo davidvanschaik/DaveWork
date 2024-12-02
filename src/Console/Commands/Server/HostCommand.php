@@ -1,9 +1,8 @@
 <?php
 
-namespace Src\Console\Commands;
+namespace Src\Console\Commands\Server;
 
 use Src\Console\Services\HostService as Service;
-use Src\Helpers\ServerHelper as Helper;
 
 class HostCommand
 {
