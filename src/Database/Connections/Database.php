@@ -26,4 +26,14 @@ class Database
     {
         return self::$schema->getConnection()->table($table);
     }
+
+    public static function tableExist(string $table): bool
+    {
+        return self::$schema->hasTable($table);
+    }
+
+    public static function dropTables(): void
+    {
+        self::$schema->dropAllTables();
+    }
 }

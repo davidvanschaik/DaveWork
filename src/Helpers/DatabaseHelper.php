@@ -38,7 +38,7 @@ class DatabaseHelper
 
     public static function tableExists(string $table): bool
     {
-        return DB::get()->hasTable($table);
+        return DB::tableExist($table);
     }
 
     private static function collectMigrations(): array
