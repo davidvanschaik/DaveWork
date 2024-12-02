@@ -17,5 +17,4 @@ class PostController
     {
         echo "This is my PostController show method! The post id is: {$request->parameters->id}";
     }
-
 }

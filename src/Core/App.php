@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Src\Core;
 
-use Src\Providers\AppServiceProvider;
-
 class App
 {
     private static self $instance;
