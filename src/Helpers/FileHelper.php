@@ -34,7 +34,7 @@ class FileHelper
     {
         ob_start();
         extract(self::getContent(), \EXTR_SKIP);
-        include __DIR__ . '/../Console/Templates/' . ucfirst(self::$type) . '.php';
+        include __DIR__ . '/../Console/Commands/Make/Templates/' . ucfirst(self::$type) . '.php';
         return ob_get_clean();
     }
 

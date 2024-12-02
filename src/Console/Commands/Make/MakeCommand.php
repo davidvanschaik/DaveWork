@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Console\Commands;
+namespace Src\Console\Commands\Make;
 
 use Src\Console\Services\MakeService as Service;
 use Src\Helpers\FileHelper as Helper;

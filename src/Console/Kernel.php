@@ -21,8 +21,9 @@ class Kernel
     private function getDirectory(array $arg): string
     {
          return __NAMESPACE__ . "\\Commands\\" . match ($arg[0]) {
-            'db' => "$arg[1]Command",
-            'make', 'host' => "$arg[0]Command",
+            'db' => "Database\\$arg[1]Command",
+            'make' => "Make\\$arg[0]Command",
+            'host' => "Server\\$arg[0]Command",
             'help' => exit
         };
     }
