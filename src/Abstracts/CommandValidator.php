@@ -4,7 +4,7 @@ namespace Src\Abstracts;
 
 use Src\Console\Response as CLI;
 
-abstract class Command
+abstract class CommandValidator
 {
     protected array $args;
 
