@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Controllers\AuthController;
-use App\Controllers\HomeController;
-use App\Controllers\LikeController;
-use App\Controllers\PostController;
-use App\Controllers\UserController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use Src\Routing\RouteRegistration as Route;
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
