@@ -47,8 +47,9 @@ class MakeService
     private function getDirectory(mixed $type): string | null
     {
         return match ($type) {
-            'controller' => "app/Controllers/",
-            'middleware' => 'app/Middleware/',
+            'controller' => "app/Http/Controllers/",
+            'middleware' => 'app/Http/Middleware/',
+            'provider' => 'app/Providers/',
             'model' => 'app/Models/',
             'migration' => 'database/Migrations/',
             'factory' => 'database/Factories/',

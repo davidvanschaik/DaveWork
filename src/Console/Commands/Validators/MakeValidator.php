@@ -7,7 +7,7 @@ use Src\Console\Response as CLI;
 
 class MakeValidator extends Command
 {
-    protected array $commands = ['controller', 'migration', 'middleware', 'model', 'factory', 'view'];
+    protected array $commands = ['controller', 'migration', 'provider', 'middleware', 'model', 'factory', 'view'];
 
     public function __invoke(array $arg): void
     {
