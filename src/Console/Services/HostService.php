@@ -74,7 +74,7 @@ class HostService
 
     private function displayActivity(array $info): void
     {
-        echo '    ' . CLI::echo('GRAY', $info[0]) . "$info[1] $info[2] $info[3] ";
+        echo '    ' . CLI::echo('GRAY', $info[0]) . " $info[1] $info[2] $info[3] ";
         echo CLI::GRAY . str_repeat('.', 160 - array_sum(array_map('strlen', $info))) . " ~ $info[4]ms \n";
     }
 }

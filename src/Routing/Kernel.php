@@ -74,6 +74,7 @@ class Kernel
         if (! empty($route->parameters)) {
             $this->request->setParameters($route->parameters);
         }
+    // TODO: make user function is_callable()
 
         if (is_array($action) && count($action) === 2) {
             (new $action[0]())->{$action[1]}($this->request);

@@ -39,7 +39,7 @@ class SessionMiddleware implements Middleware
     private function checkTimeOut(): bool
     {
 //        Time Out Duration in seconds.
-        return (new SessionTimeOutHandler($this->session, 7200))->checkTimeOut();
+        return (new SessionTimeOutHandler($this->session, 5))->checkTimeOut();
     }
 
     private function destroy(): void
